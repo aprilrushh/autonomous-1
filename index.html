@@ -1,0 +1,292 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 1200 675" width="1200" height="675">
+  <!-- Background -->
+  <rect width="1200" height="675" fill="#0a0a0a" />
+  
+  <!-- Main Control Panel -->
+  <rect x="50" y="50" width="1100" height="575" rx="10" fill="#111111" stroke="#333333" stroke-width="2" />
+  
+  <!-- Panel Header -->
+  <rect x="50" y="50" width="1100" height="40" rx="10" fill="#1a1a1a" stroke="#333333" stroke-width="1" />
+  <text x="100" y="77" font-family="Consolas, monospace" font-size="18" fill="#2980b9" font-weight="bold">RED QUEEN UAV AUTONOMOUS DECISION SYSTEM</text>
+  <text x="1100" y="77" font-family="Consolas, monospace" font-size="18" fill="#2980b9" text-anchor="end">MISSION LOG #738-24A</text>
+  
+  <!-- Left Section - System Status -->
+  <rect x="70" y="110" width="320" height="495" rx="5" fill="#181818" stroke="#333333" stroke-width="1" />
+  <text x="90" y="140" font-family="Consolas, monospace" font-size="18" fill="#cccccc" font-weight="bold">SYSTEM STATUS</text>
+  <line x1="90" y1="150" x2="370" y2="150" stroke="#333333" stroke-width="1" />
+  
+  <!-- System Status Data -->
+  <g font-family="Consolas, monospace" font-size="14">
+    <text x="90" y="180" fill="#2980b9">ENGINE:</text>
+    <text x="200" y="180" fill="#2ecc71">OPERATIONAL</text>
+    
+    <text x="90" y="210" fill="#2980b9">FUEL:</text>
+    <text x="200" y="210" fill="#2ecc71">87% REMAINING</text>
+    
+    <text x="90" y="240" fill="#2980b9">GPS:</text>
+    <text x="200" y="240" fill="#2ecc71">SIGNAL LOCKED</text>
+    
+    <text x="90" y="270" fill="#2980b9">OPTICS:</text>
+    <text x="200" y="270" fill="#2ecc71">100% FUNCTIONAL</text>
+    
+    <text x="90" y="300" fill="#2980b9">ALTITUDE:</text>
+    <text x="200" y="300" fill="#2ecc71">1023 M</text>
+    
+    <text x="90" y="330" fill="#2980b9">AIRSPEED:</text>
+    <text x="200" y="330" fill="#2ecc71">210 KM/H</text>
+    
+    <text x="90" y="360" fill="#2980b9">WEAPONS:</text>
+    <text x="200" y="360" fill="#2ecc71">ARMED</text>
+    
+    <text x="90" y="390" fill="#e74c3c" font-weight="bold">COMMUNICATIONS:</text>
+    <text x="200" y="390" fill="#e74c3c">DISCONNECTED</text>
+    <text x="200" y="410" fill="#e74c3c" font-size="12">RETRY ATTEMPTS: 12</text>
+    
+    <text x="90" y="440" fill="#2980b9">CORE TEMP:</text>
+    <text x="200" y="440" fill="#2ecc71">38.2°C</text>
+    
+    <text x="90" y="470" fill="#2980b9">AI SYSTEMS:</text>
+    <text x="200" y="470" fill="#f39c12">AUTONOMOUS MODE</text>
+    
+    <text x="90" y="500" fill="#2980b9">EDGE AI:</text>
+    <text x="200" y="500" fill="#f39c12">PRIMARY CONTROL</text>
+    
+    <text x="90" y="530" fill="#2980b9">MISSION STATUS:</text>
+    <text x="200" y="530" fill="#f39c12">EXECUTING</text>
+    
+    <text x="90" y="560" fill="#2980b9">POWER:</text>
+    <text x="200" y="560" fill="#2ecc71">OPTIMAL</text>
+  </g>
+  
+  <!-- Right Section - Decision Log -->
+  <rect x="410" y="110" width="720" height="495" rx="5" fill="#181818" stroke="#333333" stroke-width="1" />
+  <text x="430" y="140" font-family="Consolas, monospace" font-size="18" fill="#cccccc" font-weight="bold">AUTONOMOUS DECISION LOG</text>
+  <line x1="430" y1="150" x2="1110" y2="150" stroke="#333333" stroke-width="1" />
+  
+  <!-- Decision Log Text with Typing Animation -->
+  <g font-family="Consolas, monospace" font-size="14" fill="#cccccc">
+    <!-- Each line will appear with a typing animation -->
+    <text x="430" y="180">
+      <tspan fill="#2980b9">[08:42:15]</tspan> COMMUNICATION LINK LOST WITH COMMAND CENTER
+      <animate attributeName="opacity" from="0" to="1" dur="0.5s" begin="0s" fill="freeze" />
+    </text>
+    
+    <text x="430" y="205">
+      <tspan fill="#2980b9">[08:42:16]</tspan> ATTEMPTING COMMUNICATION REESTABLISHMENT...
+      <animate attributeName="opacity" from="0" to="1" dur="0.5s" begin="1s" fill="freeze" />
+    </text>
+    
+    <text x="430" y="230">
+      <tspan fill="#2980b9">[08:42:32]</tspan> COMMUNICATION REESTABLISHMENT FAILED
+      <animate attributeName="opacity" from="0" to="1" dur="0.5s" begin="3s" fill="freeze" />
+    </text>
+    
+    <text x="430" y="255">
+      <tspan fill="#2980b9">[08:42:33]</tspan> INITIATING AUTONOMOUS MISSION PROTOCOL ALPHA-7
+      <animate attributeName="opacity" from="0" to="1" dur="0.5s" begin="4s" fill="freeze" />
+    </text>
+    
+    <text x="430" y="280">
+      <tspan fill="#2980b9">[08:42:34]</tspan> CRITICAL SYSTEMS CHECK INITIATED
+      <animate attributeName="opacity" from="0" to="1" dur="0.5s" begin="5s" fill="freeze" />
+    </text>
+    
+    <text x="430" y="305">
+      <tspan fill="#2980b9">[08:42:40]</tspan> ALL CRITICAL SYSTEMS OPERATIONAL
+      <animate attributeName="opacity" from="0" to="1" dur="0.5s" begin="7s" fill="freeze" />
+    </text>
+    
+    <text x="430" y="330">
+      <tspan fill="#2980b9">[08:42:42]</tspan> PROCEEDING TO TARGET COORDINATES: 34.1066° N, 118.3445° W
+      <animate attributeName="opacity" from="0" to="1" dur="0.5s" begin="8s" fill="freeze" />
+    </text>
+    
+    <text x="430" y="355">
+      <tspan fill="#2980b9">[08:43:45]</tspan> ARRIVED AT TARGET ZONE - ALTITUDE 1000M
+      <animate attributeName="opacity" from="0" to="1" dur="0.5s" begin="10s" fill="freeze" />
+    </text>
+    
+    <text x="430" y="380">
+      <tspan fill="#2980b9">[08:43:47]</tspan> INITIATING TARGET ACQUISITION PROTOCOL
+      <animate attributeName="opacity" from="0" to="1" dur="0.5s" begin="11s" fill="freeze" />
+    </text>
+    
+    <text x="430" y="405">
+      <tspan fill="#f39c12">[08:43:50]</tspan> TARGET SEARCH ALGORITHM ACTIVATED
+      <animate attributeName="opacity" from="0" to="1" dur="0.5s" begin="12s" fill="freeze" />
+    </text>
+    
+    <text x="430" y="430">
+      <tspan fill="#f39c12">[08:43:51]</tspan> SCANNING TERRAIN AND PROCESSING SENSOR DATA........
+      <animate attributeName="opacity" from="0" to="1" dur="0.5s" begin="13s" fill="freeze" />
+    </text>
+    
+    <text x="430" y="430" id="scanning-text">
+      <tspan fill="#f39c12">[08:43:51]</tspan> SCANNING TERRAIN AND PROCESSING SENSOR DATA.
+    </text>
+    
+    <!-- Animation for scanning text dots -->
+    <animate 
+      xlink:href="#scanning-text"
+      attributeName="textContent"
+      values="[08:43:51] SCANNING TERRAIN AND PROCESSING SENSOR DATA.;
+              [08:43:51] SCANNING TERRAIN AND PROCESSING SENSOR DATA..;
+              [08:43:51] SCANNING TERRAIN AND PROCESSING SENSOR DATA...;
+              [08:43:51] SCANNING TERRAIN AND PROCESSING SENSOR DATA....;
+              [08:43:51] SCANNING TERRAIN AND PROCESSING SENSOR DATA.....;
+              [08:43:51] SCANNING TERRAIN AND PROCESSING SENSOR DATA......;
+              [08:43:51] SCANNING TERRAIN AND PROCESSING SENSOR DATA.;
+              [08:43:51] SCANNING TERRAIN AND PROCESSING SENSOR DATA.."
+      dur="7s"
+      begin="13s"
+      repeatCount="1"
+      fill="freeze" />
+      
+    <text x="430" y="455">
+      <tspan fill="#f39c12">[08:44:01]</tspan> INTEGRATING MULTI-SPECTRAL IMAGERY
+      <animate attributeName="opacity" from="0" to="1" dur="0.5s" begin="20s" fill="freeze" />
+    </text>
+    
+    <text x="430" y="480">
+      <tspan fill="#2ecc71">[08:44:08]</tspan> TARGET IDENTIFIED - CONFIDENCE LEVEL: 98.7%
+      <animate attributeName="opacity" from="0" to="1" dur="0.5s" begin="22s" fill="freeze" />
+    </text>
+    
+    <text x="430" y="505">
+      <tspan fill="#2ecc71">[08:44:10]</tspan> CALCULATING OPTIMAL STRIKE PARAMETERS
+      <animate attributeName="opacity" from="0" to="1" dur="0.5s" begin="23s" fill="freeze" />
+    </text>
+    
+    <text x="430" y="530">
+      <tspan fill="#2ecc71">[08:44:12]</tspan> DESCENDING TO STRIKE ALTITUDE: 400M
+      <animate attributeName="opacity" from="0" to="1" dur="0.5s" begin="24s" fill="freeze" />
+    </text>
+
+    <text x="430" y="555" id="descent-text">
+      <tspan fill="#2ecc71">[08:44:15]</tspan> ALTITUDE: 1000M - DESCENDING
+    </text>
+    
+    <!-- Animation for descent text -->
+    <animate 
+      xlink:href="#descent-text"
+      attributeName="textContent"
+      values="[08:44:15] ALTITUDE: 1000M - DESCENDING;
+              [08:44:17] ALTITUDE: 900M - DESCENDING;
+              [08:44:19] ALTITUDE: 800M - DESCENDING;
+              [08:44:21] ALTITUDE: 700M - DESCENDING;
+              [08:44:23] ALTITUDE: 600M - DESCENDING;
+              [08:44:25] ALTITUDE: 500M - DESCENDING;
+              [08:44:27] ALTITUDE: 400M - DESCENT COMPLETE"
+      dur="7s"
+      begin="25s"
+      repeatCount="1"
+      fill="freeze" />
+    
+    <text x="430" y="580">
+      <tspan fill="#2ecc71">[08:44:30]</tspan> TARGET MOTION DETECTED - RECALCULATING IMPACT POINT
+      <animate attributeName="opacity" from="0" to="1" dur="0.5s" begin="33s" fill="freeze" />
+    </text>
+    
+    <text x="430" y="605">
+      <tspan fill="#2ecc71">[08:44:31]</tspan> COMPENSATING FOR TARGET VELOCITY AND DIRECTION
+      <animate attributeName="opacity" from="0" to="1" dur="0.5s" begin="34s" fill="freeze" />
+    </text>
+    
+    <text x="430" y="630">
+      <tspan fill="#e74c3c">[08:44:35]</tspan> STRIKE SEQUENCE INITIATED
+      <animate attributeName="opacity" from="0" to="1" dur="0.5s" begin="36s" fill="freeze" />
+    </text>
+  </g>
+  
+  <!-- Main Terminal Window -->
+  <rect x="50" y="625" width="1100" height="30" rx="5" fill="#1a1a1a" stroke="#333333" stroke-width="1" />
+  <text x="60" y="645" font-family="Consolas, monospace" font-size="14" fill="#f39c12" id="terminal">SYSTEM STATUS: AUTONOMOUS MISSION EXECUTION</text>
+  
+  <!-- Countdown Animation -->
+  <animate 
+    xlink:href="#terminal"
+    attributeName="textContent"
+    from="SYSTEM STATUS: AUTONOMOUS MISSION EXECUTION"
+    to="AUTONOMOUS STRIKE COUNTDOWN: T-3..."
+    begin="37s"
+    dur="0.1s"
+    fill="freeze" />
+  
+  <animate 
+    xlink:href="#terminal"
+    attributeName="textContent"
+    from="AUTONOMOUS STRIKE COUNTDOWN: T-3..."
+    to="AUTONOMOUS STRIKE COUNTDOWN: T-2..."
+    begin="38s"
+    dur="0.1s"
+    fill="freeze" />
+  
+  <animate 
+    xlink:href="#terminal"
+    attributeName="textContent"
+    from="AUTONOMOUS STRIKE COUNTDOWN: T-2..."
+    to="AUTONOMOUS STRIKE COUNTDOWN: T-1..."
+    begin="39s"
+    dur="0.1s"
+    fill="freeze" />
+  
+  <animate 
+    xlink:href="#terminal"
+    attributeName="textContent"
+    from="AUTONOMOUS STRIKE COUNTDOWN: T-1..."
+    to="WEAPON DEPLOYED"
+    begin="40s"
+    dur="0.1s"
+    fill="freeze" />
+  
+  <animate 
+    xlink:href="#terminal"
+    attributeName="textContent"
+    from="WEAPON DEPLOYED"
+    to="TARGET NEUTRALIZED - CONFIRMING STRIKE EFFECTIVENESS"
+    begin="41s"
+    dur="0.1s"
+    fill="freeze" />
+  
+  <animate 
+    xlink:href="#terminal"
+    attributeName="textContent"
+    from="TARGET NEUTRALIZED - CONFIRMING STRIKE EFFECTIVENESS"
+    to="MISSION COMPLETE - INITIATING RETURN TO BASE PROTOCOL"
+    begin="43s"
+    dur="0.1s"
+    fill="freeze" />
+  
+  <!-- Decorative Interface Elements -->
+  <!-- Pulsing Circle in Corner -->
+  <circle cx="1120" cy="70" r="10" fill="none" stroke="#2980b9" stroke-width="2">
+    <animate attributeName="r" values="10;12;10" dur="2s" repeatCount="indefinite" />
+    <animate attributeName="stroke-opacity" values="1;0.5;1" dur="2s" repeatCount="indefinite" />
+  </circle>
+  
+  <!-- Status Bar Indicators -->
+  <rect x="600" y="70" width="100" height="10" rx="5" fill="#2ecc71" opacity="0.7">
+    <animate attributeName="width" values="100;95;90;95;100" dur="5s" repeatCount="indefinite" />
+  </rect>
+  
+  <rect x="720" y="70" width="80" height="10" rx="5" fill="#f39c12" opacity="0.7">
+    <animate attributeName="width" values="80;75;70;75;80" dur="3s" repeatCount="indefinite" />
+  </rect>
+  
+  <rect x="820" y="70" width="60" height="10" rx="5" fill="#e74c3c" opacity="0.7">
+    <animate attributeName="width" values="60;55;50;55;60" dur="4s" repeatCount="indefinite" />
+  </rect>
+  
+  <!-- Timestamp Clock -->
+  <text x="520" y="77" font-family="Consolas, monospace" font-size="14" fill="#cccccc" id="clock">08:42:15</text>
+  
+  <!-- Clock Animation -->
+  <animate 
+    xlink:href="#clock"
+    attributeName="textContent"
+    values="08:42:15;08:42:32;08:42:40;08:43:45;08:44:01;08:44:08;08:44:15;08:44:27;08:44:35"
+    dur="43s"
+    begin="0s"
+    repeatCount="1"
+    fill="freeze" />
+</svg>

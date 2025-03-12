@@ -1,292 +1,350 @@
-<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 1200 675" width="1200" height="675">
-  <!-- Background -->
-  <rect width="1200" height="675" fill="#0a0a0a" />
-  
-  <!-- Main Control Panel -->
-  <rect x="50" y="50" width="1100" height="575" rx="10" fill="#111111" stroke="#333333" stroke-width="2" />
-  
-  <!-- Panel Header -->
-  <rect x="50" y="50" width="1100" height="40" rx="10" fill="#1a1a1a" stroke="#333333" stroke-width="1" />
-  <text x="100" y="77" font-family="Consolas, monospace" font-size="18" fill="#2980b9" font-weight="bold">RED QUEEN UAV AUTONOMOUS DECISION SYSTEM</text>
-  <text x="1100" y="77" font-family="Consolas, monospace" font-size="18" fill="#2980b9" text-anchor="end">MISSION LOG #738-24A</text>
-  
-  <!-- Left Section - System Status -->
-  <rect x="70" y="110" width="320" height="495" rx="5" fill="#181818" stroke="#333333" stroke-width="1" />
-  <text x="90" y="140" font-family="Consolas, monospace" font-size="18" fill="#cccccc" font-weight="bold">SYSTEM STATUS</text>
-  <line x1="90" y1="150" x2="370" y2="150" stroke="#333333" stroke-width="1" />
-  
-  <!-- System Status Data -->
-  <g font-family="Consolas, monospace" font-size="14">
-    <text x="90" y="180" fill="#2980b9">ENGINE:</text>
-    <text x="200" y="180" fill="#2ecc71">OPERATIONAL</text>
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>UAV Real-Time Terminal Log</title>
+    <style>
+        body {
+            background-color: #0a0a0a;
+            color: #33ff33;
+            font-family: 'Consolas', monospace;
+            margin: 0;
+            padding: 0;
+            display: flex;
+            flex-direction: column;
+            height: 100vh;
+            overflow: hidden;
+        }
+        .terminal-header {
+            background-color: #111111;
+            border-bottom: 1px solid #333333;
+            padding: 10px 20px;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+        }
+        .terminal-title {
+            color: #2980b9;
+            font-weight: bold;
+            font-size: 18px;
+        }
+        .status-indicators {
+            display: flex;
+            gap: 10px;
+            align-items: center;
+        }
+        .status-bar {
+            height: 10px;
+            border-radius: 5px;
+        }
+        .timestamp {
+            color: #cccccc;
+            margin-right: 15px;
+        }
+        .terminal-body {
+            flex-grow: 1;
+            background-color: #111111;
+            padding: 20px;
+            overflow: auto;
+            border-radius: 5px;
+            margin: 10px;
+            position: relative;
+        }
+        .cursor {
+            display: inline-block;
+            width: 10px;
+            height: 18px;
+            background-color: #33ff33;
+            animation: blink 1s infinite;
+            margin-left: 2px;
+            vertical-align: middle;
+        }
+        .log-line {
+            margin: 5px 0;
+            line-height: 1.5;
+            white-space: pre-wrap;
+            display: none;
+        }
+        .timestamp-log {
+            color: #2980b9;
+        }
+        .warning {
+            color: #f39c12;
+        }
+        .error {
+            color: #e74c3c;
+        }
+        .success {
+            color: #2ecc71;
+        }
+        .system-info {
+            position: absolute;
+            top: 10px;
+            right: 10px;
+            background-color: rgba(10, 10, 10, 0.7);
+            padding: 10px;
+            border-radius: 5px;
+            border: 1px solid #333333;
+            color: #cccccc;
+            width: 250px;
+            font-size: 12px;
+        }
+        .info-title {
+            color: #2980b9;
+            font-weight: bold;
+            margin-bottom: 5px;
+        }
+        .info-line {
+            display: flex;
+            justify-content: space-between;
+            margin: 3px 0;
+        }
+        .info-label {
+            color: #2980b9;
+        }
+        .info-value {
+            color: #2ecc71;
+        }
+        .status-error {
+            color: #e74c3c;
+        }
+        .status-warning {
+            color: #f39c12;
+        }
+        .progress-container {
+            width: 100%;
+            background-color: #222222;
+            height: 8px;
+            border-radius: 4px;
+            margin: 3px 0;
+            overflow: hidden;
+        }
+        .progress-bar {
+            height: 100%;
+            background-color: #2980b9;
+            width: 0;
+            border-radius: 4px;
+        }
+        @keyframes blink {
+            0%, 100% { opacity: 1; }
+            50% { opacity: 0; }
+        }
+        .dots-animation {
+            display: inline-block;
+            width: 50px;
+        }
+        .footer {
+            background-color: #111111;
+            border-top: 1px solid #333333;
+            padding: 10px 20px;
+            color: #f39c12;
+            display: flex;
+            justify-content: space-between;
+        }
+    </style>
+</head>
+<body>
+    <div class="terminal-header">
+        <div class="terminal-title">RED QUEEN UAV AUTONOMOUS DECISION SYSTEM</div>
+        <div class="status-indicators">
+            <div id="clock" class="timestamp">08:42:15</div>
+            <div class="status-bar" style="width: 100px; background-color: #2ecc71; opacity: 0.7;"></div>
+            <div class="status-bar" style="width: 80px; background-color: #f39c12; opacity: 0.7;"></div>
+            <div class="status-bar" style="width: 60px; background-color: #e74c3c; opacity: 0.7;"></div>
+        </div>
+    </div>
     
-    <text x="90" y="210" fill="#2980b9">FUEL:</text>
-    <text x="200" y="210" fill="#2ecc71">87% REMAINING</text>
-    
-    <text x="90" y="240" fill="#2980b9">GPS:</text>
-    <text x="200" y="240" fill="#2ecc71">SIGNAL LOCKED</text>
-    
-    <text x="90" y="270" fill="#2980b9">OPTICS:</text>
-    <text x="200" y="270" fill="#2ecc71">100% FUNCTIONAL</text>
-    
-    <text x="90" y="300" fill="#2980b9">ALTITUDE:</text>
-    <text x="200" y="300" fill="#2ecc71">1023 M</text>
-    
-    <text x="90" y="330" fill="#2980b9">AIRSPEED:</text>
-    <text x="200" y="330" fill="#2ecc71">210 KM/H</text>
-    
-    <text x="90" y="360" fill="#2980b9">WEAPONS:</text>
-    <text x="200" y="360" fill="#2ecc71">ARMED</text>
-    
-    <text x="90" y="390" fill="#e74c3c" font-weight="bold">COMMUNICATIONS:</text>
-    <text x="200" y="390" fill="#e74c3c">DISCONNECTED</text>
-    <text x="200" y="410" fill="#e74c3c" font-size="12">RETRY ATTEMPTS: 12</text>
-    
-    <text x="90" y="440" fill="#2980b9">CORE TEMP:</text>
-    <text x="200" y="440" fill="#2ecc71">38.2°C</text>
-    
-    <text x="90" y="470" fill="#2980b9">AI SYSTEMS:</text>
-    <text x="200" y="470" fill="#f39c12">AUTONOMOUS MODE</text>
-    
-    <text x="90" y="500" fill="#2980b9">EDGE AI:</text>
-    <text x="200" y="500" fill="#f39c12">PRIMARY CONTROL</text>
-    
-    <text x="90" y="530" fill="#2980b9">MISSION STATUS:</text>
-    <text x="200" y="530" fill="#f39c12">EXECUTING</text>
-    
-    <text x="90" y="560" fill="#2980b9">POWER:</text>
-    <text x="200" y="560" fill="#2ecc71">OPTIMAL</text>
-  </g>
-  
-  <!-- Right Section - Decision Log -->
-  <rect x="410" y="110" width="720" height="495" rx="5" fill="#181818" stroke="#333333" stroke-width="1" />
-  <text x="430" y="140" font-family="Consolas, monospace" font-size="18" fill="#cccccc" font-weight="bold">AUTONOMOUS DECISION LOG</text>
-  <line x1="430" y1="150" x2="1110" y2="150" stroke="#333333" stroke-width="1" />
-  
-  <!-- Decision Log Text with Typing Animation -->
-  <g font-family="Consolas, monospace" font-size="14" fill="#cccccc">
-    <!-- Each line will appear with a typing animation -->
-    <text x="430" y="180">
-      <tspan fill="#2980b9">[08:42:15]</tspan> COMMUNICATION LINK LOST WITH COMMAND CENTER
-      <animate attributeName="opacity" from="0" to="1" dur="0.5s" begin="0s" fill="freeze" />
-    </text>
-    
-    <text x="430" y="205">
-      <tspan fill="#2980b9">[08:42:16]</tspan> ATTEMPTING COMMUNICATION REESTABLISHMENT...
-      <animate attributeName="opacity" from="0" to="1" dur="0.5s" begin="1s" fill="freeze" />
-    </text>
-    
-    <text x="430" y="230">
-      <tspan fill="#2980b9">[08:42:32]</tspan> COMMUNICATION REESTABLISHMENT FAILED
-      <animate attributeName="opacity" from="0" to="1" dur="0.5s" begin="3s" fill="freeze" />
-    </text>
-    
-    <text x="430" y="255">
-      <tspan fill="#2980b9">[08:42:33]</tspan> INITIATING AUTONOMOUS MISSION PROTOCOL ALPHA-7
-      <animate attributeName="opacity" from="0" to="1" dur="0.5s" begin="4s" fill="freeze" />
-    </text>
-    
-    <text x="430" y="280">
-      <tspan fill="#2980b9">[08:42:34]</tspan> CRITICAL SYSTEMS CHECK INITIATED
-      <animate attributeName="opacity" from="0" to="1" dur="0.5s" begin="5s" fill="freeze" />
-    </text>
-    
-    <text x="430" y="305">
-      <tspan fill="#2980b9">[08:42:40]</tspan> ALL CRITICAL SYSTEMS OPERATIONAL
-      <animate attributeName="opacity" from="0" to="1" dur="0.5s" begin="7s" fill="freeze" />
-    </text>
-    
-    <text x="430" y="330">
-      <tspan fill="#2980b9">[08:42:42]</tspan> PROCEEDING TO TARGET COORDINATES: 34.1066° N, 118.3445° W
-      <animate attributeName="opacity" from="0" to="1" dur="0.5s" begin="8s" fill="freeze" />
-    </text>
-    
-    <text x="430" y="355">
-      <tspan fill="#2980b9">[08:43:45]</tspan> ARRIVED AT TARGET ZONE - ALTITUDE 1000M
-      <animate attributeName="opacity" from="0" to="1" dur="0.5s" begin="10s" fill="freeze" />
-    </text>
-    
-    <text x="430" y="380">
-      <tspan fill="#2980b9">[08:43:47]</tspan> INITIATING TARGET ACQUISITION PROTOCOL
-      <animate attributeName="opacity" from="0" to="1" dur="0.5s" begin="11s" fill="freeze" />
-    </text>
-    
-    <text x="430" y="405">
-      <tspan fill="#f39c12">[08:43:50]</tspan> TARGET SEARCH ALGORITHM ACTIVATED
-      <animate attributeName="opacity" from="0" to="1" dur="0.5s" begin="12s" fill="freeze" />
-    </text>
-    
-    <text x="430" y="430">
-      <tspan fill="#f39c12">[08:43:51]</tspan> SCANNING TERRAIN AND PROCESSING SENSOR DATA........
-      <animate attributeName="opacity" from="0" to="1" dur="0.5s" begin="13s" fill="freeze" />
-    </text>
-    
-    <text x="430" y="430" id="scanning-text">
-      <tspan fill="#f39c12">[08:43:51]</tspan> SCANNING TERRAIN AND PROCESSING SENSOR DATA.
-    </text>
-    
-    <!-- Animation for scanning text dots -->
-    <animate 
-      xlink:href="#scanning-text"
-      attributeName="textContent"
-      values="[08:43:51] SCANNING TERRAIN AND PROCESSING SENSOR DATA.;
-              [08:43:51] SCANNING TERRAIN AND PROCESSING SENSOR DATA..;
-              [08:43:51] SCANNING TERRAIN AND PROCESSING SENSOR DATA...;
-              [08:43:51] SCANNING TERRAIN AND PROCESSING SENSOR DATA....;
-              [08:43:51] SCANNING TERRAIN AND PROCESSING SENSOR DATA.....;
-              [08:43:51] SCANNING TERRAIN AND PROCESSING SENSOR DATA......;
-              [08:43:51] SCANNING TERRAIN AND PROCESSING SENSOR DATA.;
-              [08:43:51] SCANNING TERRAIN AND PROCESSING SENSOR DATA.."
-      dur="7s"
-      begin="13s"
-      repeatCount="1"
-      fill="freeze" />
-      
-    <text x="430" y="455">
-      <tspan fill="#f39c12">[08:44:01]</tspan> INTEGRATING MULTI-SPECTRAL IMAGERY
-      <animate attributeName="opacity" from="0" to="1" dur="0.5s" begin="20s" fill="freeze" />
-    </text>
-    
-    <text x="430" y="480">
-      <tspan fill="#2ecc71">[08:44:08]</tspan> TARGET IDENTIFIED - CONFIDENCE LEVEL: 98.7%
-      <animate attributeName="opacity" from="0" to="1" dur="0.5s" begin="22s" fill="freeze" />
-    </text>
-    
-    <text x="430" y="505">
-      <tspan fill="#2ecc71">[08:44:10]</tspan> CALCULATING OPTIMAL STRIKE PARAMETERS
-      <animate attributeName="opacity" from="0" to="1" dur="0.5s" begin="23s" fill="freeze" />
-    </text>
-    
-    <text x="430" y="530">
-      <tspan fill="#2ecc71">[08:44:12]</tspan> DESCENDING TO STRIKE ALTITUDE: 400M
-      <animate attributeName="opacity" from="0" to="1" dur="0.5s" begin="24s" fill="freeze" />
-    </text>
+    <div class="terminal-body" id="terminal">
+        <div class="system-info">
+            <div class="info-title">SYSTEM STATUS</div>
+            <div class="info-line">
+                <span class="info-label">ENGINE:</span>
+                <span class="info-value">OPERATIONAL</span>
+            </div>
+            <div class="info-line">
+                <span class="info-label">FUEL:</span>
+                <span class="info-value">87% REMAINING</span>
+            </div>
+            <div class="info-line">
+                <span class="info-label">GPS:</span>
+                <span class="info-value">SIGNAL LOCKED</span>
+            </div>
+            <div class="info-line">
+                <span class="info-label">OPTICS:</span>
+                <span class="info-value">100% FUNCTIONAL</span>
+            </div>
+            <div class="info-line">
+                <span class="info-label">ALTITUDE:</span>
+                <span class="info-value" id="altitude-value">1023 M</span>
+            </div>
+            <div class="info-line">
+                <span class="info-label">AIRSPEED:</span>
+                <span class="info-value">210 KM/H</span>
+            </div>
+            <div class="info-line">
+                <span class="info-label">WEAPONS:</span>
+                <span class="info-value">ARMED</span>
+            </div>
+            <div class="info-line">
+                <span class="info-label">COMMUNICATIONS:</span>
+                <span class="status-error">DISCONNECTED</span>
+            </div>
+            <div class="info-line">
+                <span class="info-label">AI SYSTEMS:</span>
+                <span class="status-warning">AUTONOMOUS MODE</span>
+            </div>
+            <div class="info-line">
+                <span class="info-label">MISSION STATUS:</span>
+                <span class="status-warning">EXECUTING</span>
+            </div>
+        </div>
 
-    <text x="430" y="555" id="descent-text">
-      <tspan fill="#2ecc71">[08:44:15]</tspan> ALTITUDE: 1000M - DESCENDING
-    </text>
+        <!-- Log lines will be added here by JavaScript -->
+        <span class="cursor"></span>
+    </div>
     
-    <!-- Animation for descent text -->
-    <animate 
-      xlink:href="#descent-text"
-      attributeName="textContent"
-      values="[08:44:15] ALTITUDE: 1000M - DESCENDING;
-              [08:44:17] ALTITUDE: 900M - DESCENDING;
-              [08:44:19] ALTITUDE: 800M - DESCENDING;
-              [08:44:21] ALTITUDE: 700M - DESCENDING;
-              [08:44:23] ALTITUDE: 600M - DESCENDING;
-              [08:44:25] ALTITUDE: 500M - DESCENDING;
-              [08:44:27] ALTITUDE: 400M - DESCENT COMPLETE"
-      dur="7s"
-      begin="25s"
-      repeatCount="1"
-      fill="freeze" />
-    
-    <text x="430" y="580">
-      <tspan fill="#2ecc71">[08:44:30]</tspan> TARGET MOTION DETECTED - RECALCULATING IMPACT POINT
-      <animate attributeName="opacity" from="0" to="1" dur="0.5s" begin="33s" fill="freeze" />
-    </text>
-    
-    <text x="430" y="605">
-      <tspan fill="#2ecc71">[08:44:31]</tspan> COMPENSATING FOR TARGET VELOCITY AND DIRECTION
-      <animate attributeName="opacity" from="0" to="1" dur="0.5s" begin="34s" fill="freeze" />
-    </text>
-    
-    <text x="430" y="630">
-      <tspan fill="#e74c3c">[08:44:35]</tspan> STRIKE SEQUENCE INITIATED
-      <animate attributeName="opacity" from="0" to="1" dur="0.5s" begin="36s" fill="freeze" />
-    </text>
-  </g>
-  
-  <!-- Main Terminal Window -->
-  <rect x="50" y="625" width="1100" height="30" rx="5" fill="#1a1a1a" stroke="#333333" stroke-width="1" />
-  <text x="60" y="645" font-family="Consolas, monospace" font-size="14" fill="#f39c12" id="terminal">SYSTEM STATUS: AUTONOMOUS MISSION EXECUTION</text>
-  
-  <!-- Countdown Animation -->
-  <animate 
-    xlink:href="#terminal"
-    attributeName="textContent"
-    from="SYSTEM STATUS: AUTONOMOUS MISSION EXECUTION"
-    to="AUTONOMOUS STRIKE COUNTDOWN: T-3..."
-    begin="37s"
-    dur="0.1s"
-    fill="freeze" />
-  
-  <animate 
-    xlink:href="#terminal"
-    attributeName="textContent"
-    from="AUTONOMOUS STRIKE COUNTDOWN: T-3..."
-    to="AUTONOMOUS STRIKE COUNTDOWN: T-2..."
-    begin="38s"
-    dur="0.1s"
-    fill="freeze" />
-  
-  <animate 
-    xlink:href="#terminal"
-    attributeName="textContent"
-    from="AUTONOMOUS STRIKE COUNTDOWN: T-2..."
-    to="AUTONOMOUS STRIKE COUNTDOWN: T-1..."
-    begin="39s"
-    dur="0.1s"
-    fill="freeze" />
-  
-  <animate 
-    xlink:href="#terminal"
-    attributeName="textContent"
-    from="AUTONOMOUS STRIKE COUNTDOWN: T-1..."
-    to="WEAPON DEPLOYED"
-    begin="40s"
-    dur="0.1s"
-    fill="freeze" />
-  
-  <animate 
-    xlink:href="#terminal"
-    attributeName="textContent"
-    from="WEAPON DEPLOYED"
-    to="TARGET NEUTRALIZED - CONFIRMING STRIKE EFFECTIVENESS"
-    begin="41s"
-    dur="0.1s"
-    fill="freeze" />
-  
-  <animate 
-    xlink:href="#terminal"
-    attributeName="textContent"
-    from="TARGET NEUTRALIZED - CONFIRMING STRIKE EFFECTIVENESS"
-    to="MISSION COMPLETE - INITIATING RETURN TO BASE PROTOCOL"
-    begin="43s"
-    dur="0.1s"
-    fill="freeze" />
-  
-  <!-- Decorative Interface Elements -->
-  <!-- Pulsing Circle in Corner -->
-  <circle cx="1120" cy="70" r="10" fill="none" stroke="#2980b9" stroke-width="2">
-    <animate attributeName="r" values="10;12;10" dur="2s" repeatCount="indefinite" />
-    <animate attributeName="stroke-opacity" values="1;0.5;1" dur="2s" repeatCount="indefinite" />
-  </circle>
-  
-  <!-- Status Bar Indicators -->
-  <rect x="600" y="70" width="100" height="10" rx="5" fill="#2ecc71" opacity="0.7">
-    <animate attributeName="width" values="100;95;90;95;100" dur="5s" repeatCount="indefinite" />
-  </rect>
-  
-  <rect x="720" y="70" width="80" height="10" rx="5" fill="#f39c12" opacity="0.7">
-    <animate attributeName="width" values="80;75;70;75;80" dur="3s" repeatCount="indefinite" />
-  </rect>
-  
-  <rect x="820" y="70" width="60" height="10" rx="5" fill="#e74c3c" opacity="0.7">
-    <animate attributeName="width" values="60;55;50;55;60" dur="4s" repeatCount="indefinite" />
-  </rect>
-  
-  <!-- Timestamp Clock -->
-  <text x="520" y="77" font-family="Consolas, monospace" font-size="14" fill="#cccccc" id="clock">08:42:15</text>
-  
-  <!-- Clock Animation -->
-  <animate 
-    xlink:href="#clock"
-    attributeName="textContent"
-    values="08:42:15;08:42:32;08:42:40;08:43:45;08:44:01;08:44:08;08:44:15;08:44:27;08:44:35"
-    dur="43s"
-    begin="0s"
-    repeatCount="1"
-    fill="freeze" />
-</svg>
+    <div class="footer">
+        <div id="status-message">SYSTEM STATUS: AUTONOMOUS MISSION EXECUTION</div>
+        <div>MISSION LOG #738-24A</div>
+    </div>
+
+    <script>
+        document.addEventListener('DOMContentLoaded', function() {
+            const terminal = document.getElementById('terminal');
+            const statusMessage = document.getElementById('status-message');
+            const clock = document.getElementById('clock');
+            const altitudeValue = document.getElementById('altitude-value');
+            
+            // Log entries with timing, type, and content
+            const logEntries = [
+                { time: 0, timestamp: "08:42:15", text: "COMMUNICATION LINK LOST WITH COMMAND CENTER", type: "error" },
+                { time: 2, timestamp: "08:42:16", text: "ATTEMPTING COMMUNICATION REESTABLISHMENT...", type: "warning" },
+                { time: 5, timestamp: "08:42:32", text: "COMMUNICATION REESTABLISHMENT FAILED", type: "error" },
+                { time: 7, timestamp: "08:42:33", text: "INITIATING AUTONOMOUS MISSION PROTOCOL ALPHA-7", type: "warning" },
+                { time: 9, timestamp: "08:42:34", text: "CRITICAL SYSTEMS CHECK INITIATED", type: "normal" },
+                { time: 10, timestamp: "08:42:35", text: "CHECKING ENGINE SYSTEMS...", type: "normal" },
+                { time: 11, timestamp: "08:42:36", text: "CHECKING FUEL SYSTEMS...", type: "normal" },
+                { time: 12, timestamp: "08:42:37", text: "CHECKING NAVIGATION SYSTEMS...", type: "normal" },
+                { time: 13, timestamp: "08:42:38", text: "CHECKING WEAPON SYSTEMS...", type: "normal" },
+                { time: 14, timestamp: "08:42:40", text: "ALL CRITICAL SYSTEMS OPERATIONAL", type: "success" },
+                { time: 16, timestamp: "08:42:42", text: "PROCEEDING TO TARGET COORDINATES: 34.1066° N, 118.3445° W", type: "normal" },
+                { time: 19, timestamp: "08:43:45", text: "ARRIVED AT TARGET ZONE - ALTITUDE 1000M", type: "success" },
+                { time: 21, timestamp: "08:43:47", text: "INITIATING TARGET ACQUISITION PROTOCOL", type: "normal" },
+                { time: 23, timestamp: "08:43:50", text: "TARGET SEARCH ALGORITHM ACTIVATED", type: "warning" },
+                { time: 25, timestamp: "08:43:51", text: "SCANNING TERRAIN AND PROCESSING SENSOR DATA", type: "warning", animation: "dots", duration: 7 },
+                { time: 32, timestamp: "08:44:01", text: "INTEGRATING MULTI-SPECTRAL IMAGERY", type: "normal" },
+                { time: 35, timestamp: "08:44:08", text: "TARGET IDENTIFIED - CONFIDENCE LEVEL: 98.7%", type: "success" },
+                { time: 37, timestamp: "08:44:10", text: "CALCULATING OPTIMAL STRIKE PARAMETERS", type: "success" },
+                { time: 39, timestamp: "08:44:12", text: "DESCENDING TO STRIKE ALTITUDE: 400M", type: "success" },
+                { time: 41, timestamp: "08:44:15", text: "ALTITUDE DESCENT INITIATED", type: "normal", animation: "descent", duration: 7 },
+                { time: 48, timestamp: "08:44:30", text: "TARGET MOTION DETECTED - RECALCULATING IMPACT POINT", type: "warning" },
+                { time: 50, timestamp: "08:44:31", text: "COMPENSATING FOR TARGET VELOCITY AND DIRECTION", type: "success" },
+                { time: 52, timestamp: "08:44:35", text: "STRIKE SEQUENCE INITIATED", type: "error" },
+                { time: 54, timestamp: "08:44:38", text: "AUTONOMOUS STRIKE COUNTDOWN: T-3...", type: "error" },
+                { time: 55, timestamp: "08:44:39", text: "AUTONOMOUS STRIKE COUNTDOWN: T-2...", type: "error" },
+                { time: 56, timestamp: "08:44:40", text: "AUTONOMOUS STRIKE COUNTDOWN: T-1...", type: "error" },
+                { time: 57, timestamp: "08:44:41", text: "WEAPON DEPLOYED", type: "error" },
+                { time: 58, timestamp: "08:44:45", text: "TARGET NEUTRALIZED - CONFIRMING STRIKE EFFECTIVENESS", type: "success" },
+                { time: 60, timestamp: "08:44:50", text: "MISSION COMPLETE - INITIATING RETURN TO BASE PROTOCOL", type: "success" }
+            ];
+
+            function addLogLine(timestamp, text, type) {
+                const logLine = document.createElement('div');
+                logLine.className = `log-line ${type}`;
+                
+                // Create the timestamp span
+                const timestampSpan = document.createElement('span');
+                timestampSpan.className = 'timestamp-log';
+                timestampSpan.textContent = `[${timestamp}] `;
+                
+                // Add the timestamp and text to the log line
+                logLine.appendChild(timestampSpan);
+                logLine.appendChild(document.createTextNode(text));
+                
+                // Insert the log line before the cursor
+                terminal.insertBefore(logLine, document.querySelector('.cursor'));
+                
+                // Display the log line with a typing effect
+                logLine.style.display = 'block';
+                
+                // Scroll to the bottom
+                terminal.scrollTop = terminal.scrollHeight;
+                
+                // Update the clock
+                clock.textContent = timestamp;
+                
+                return logLine;
+            }
+            
+            function updateDotsAnimation(element, duration) {
+                let dots = '.';
+                let count = 0;
+                const dotsSpan = document.createElement('span');
+                dotsSpan.className = 'dots-animation';
+                element.appendChild(dotsSpan);
+                
+                const interval = setInterval(() => {
+                    count++;
+                    if (count > 8) {
+                        dots = '.';
+                        count = 1;
+                    } else {
+                        dots += '.';
+                    }
+                    dotsSpan.textContent = dots;
+                }, duration * 1000 / 8);
+                
+                return {
+                    clear: () => {
+                        clearInterval(interval);
+                        if (dotsSpan.parentNode) {
+                            dotsSpan.parentNode.removeChild(dotsSpan);
+                        }
+                    }
+                };
+            }
+            
+            function updateDescentAnimation(duration) {
+                const altitudes = [1000, 900, 800, 700, 600, 500, 400];
+                let index = 0;
+                
+                const interval = setInterval(() => {
+                    if (index < altitudes.length) {
+                        altitudeValue.textContent = `${altitudes[index]} M`;
+                        index++;
+                    } else {
+                        clearInterval(interval);
+                    }
+                }, duration * 1000 / altitudes.length);
+                
+                return {
+                    clear: () => clearInterval(interval)
+                };
+            }
+
+            // Process each log entry with the appropriate timing
+            logEntries.forEach(entry => {
+                setTimeout(() => {
+                    const logLine = addLogLine(entry.timestamp, entry.text, entry.type);
+                    
+                    // Handle special animations
+                    if (entry.animation === 'dots') {
+                        const dots = updateDotsAnimation(logLine, entry.duration);
+                        setTimeout(() => dots.clear(), entry.duration * 1000);
+                    } else if (entry.animation === 'descent') {
+                        updateDescentAnimation(entry.duration);
+                    }
+                    
+                    // Update status message for countdown
+                    if (entry.text.includes('COUNTDOWN') || entry.text.includes('WEAPON DEPLOYED') || 
+                        entry.text.includes('TARGET NEUTRALIZED') || entry.text.includes('MISSION COMPLETE')) {
+                        statusMessage.textContent = entry.text;
+                    }
+                    
+                }, entry.time * 1000);
+            });
+        });
+    </script>
+</body>
+</html>

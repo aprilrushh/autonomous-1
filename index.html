@@ -1,42 +1,1029 @@
 <!DOCTYPE html>
 <html lang="en">
-
 <head>
   <meta charset="UTF-8">
-  <meta name="viewport" content="width:device-width, initial-scale=1.0">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
   <title>RED QUEEN UAV Command & Control System</title>
-  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.2/css/all.min.css"
-    integrity="sha512-z3gLpd7yknf1YoNbCzqRKc4qyor8gaKU1qmn+CShxbuBusANI9QpRohGBreCFkKxLhei6S9CQXFEbbKuqLg0DA=="
-    crossorigin="anonymous" referrerpolicy="no-referrer" />
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.2/css/all.min.css" integrity="sha512-z3gLpd7yknf1YoNbCzqRKc4qyor8gaKU1qmn+CShxbuBusANI9QpRohGBreCFkKxLhei6S9CQXFEbbKuqLg0DA==" crossorigin="anonymous" referrerpolicy="no-referrer" />
   <style>
-    /* ... (이전 스타일과 동일) ... */
+    /* Global styles */
+    * {
+      margin: 0;
+      padding: 0;
+      box-sizing: border-box;
+      font-family: 'Roboto', 'Consolas', monospace;
+    }
+    body {
+      background-color: #0a0a0a;
+      color: #e0e0e0;
+      margin: 0;
+      padding: 0;
+      display: flex;
+      flex-direction: column;
+      height: 100vh;
+      overflow: hidden;
+    }
+    /* Top Navigation */
+    .top-nav {
+      background-color: #181818;
+      border-bottom: 1px solid #333;
+      display: flex;
+      justify-content: space-between;
+      padding: 0 10px;
+      height: 30px;
+      align-items: center;
+      font-size: 10px;
+    }
+    .nav-left, .nav-right {
+      display: flex;
+      align-items: center;
+    }
+    .nav-item {
+      padding: 0 10px;
+      height: 30px;
+      display: flex;
+      align-items: center;
+      border-right: 1px solid #333;
+      cursor: pointer;
+      transition: background-color 0.2s;
+    }
+    .nav-item:hover {
+      background-color: #282828;
+    }
+    .nav-item.active {
+      background-color: #252525;
+      border-bottom: 2px solid #2980b9;
+    }
+    .nav-icon {
+      margin-right: 5px;
+      color: #2980b9;
+    }
+    .classified-tag {
+      background-color: #e74c3c;
+      color: white;
+      padding: 1px 5px;
+      border-radius: 2px;
+      font-size: 8px;
+      font-weight: bold;
+      margin-left: 5px;
+    }
+    /* Terminal Header */
+    .terminal-header {
+      background-color: #111111;
+      border-bottom: 1px solid #333333;
+      padding: 5px 10px;
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      height: 40px;
+    }
+    .terminal-title {
+      color: #2980b9;
+      font-weight: bold;
+      font-size: 14px;
+      display: flex;
+      align-items: center;
+    }
+    .status-indicators {
+      display: flex;
+      gap: 10px;
+      align-items: center;
+    }
+    .status-item {
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      font-size: 9px;
+    }
+    .status-label {
+      color: #888;
+      margin-bottom: 2px;
+    }
+    .status-value {
+      color: #2ecc71;
+    }
+    .status-value.warning {
+      color: #f39c12;
+    }
+    .status-value.error {
+      color: #e74c3c;
+    }
+    .status-bar {
+      height: 3px;
+      border-radius: 2px;
+      margin-top: 2px;
+    }
+    .timestamp {
+      color: #cccccc;
+      margin-right: 10px;
+      font-size: 12px;
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+    }
+    .timestamp-label {
+      font-size: 8px;
+      color: #666;
+      margin-bottom: 2px;
+    }
+    /* Main Container */
+    .main-container {
+      display: flex;
+      flex-grow: 1;
+      overflow: hidden;
+    }
+    /* Sidebar */
+    .sidebar {
+      width: 40px;
+      background-color: #181818;
+      border-right: 1px solid #333;
+      display: flex;
+      flex-direction: column;
+      padding: 10px 0;
+    }
+    .sidebar-item {
+      height: 40px;
+      display: flex;
+      justify-content: center;
+      align-items: center;
+      color: #888;
+      font-size: 16px;
+      cursor: pointer;
+      position: relative;
+      transition: color 0.2s;
+    }
+    .sidebar-item:hover {
+      color: #2980b9;
+    }
+    .sidebar-item.active {
+      color: #2980b9;
+    }
+    .sidebar-item.active:before {
+      content: '';
+      position: absolute;
+      left: 0;
+      top: 12px;
+      height: 16px;
+      width: 3px;
+      background-color: #2980b9;
+    }
+    .sidebar-circle {
+      height: 28px;
+      width: 28px;
+      border-radius: 50%;
+      background-color: #0a0a0a;
+      border: 1px solid #555;
+      display: flex;
+      justify-content: center;
+      align-items: center;
+    }
+    .sidebar-item.active .sidebar-circle {
+      border-color: #2980b9;
+    }
+    /* Terminal Body */
+    .terminal-body {
+      flex-grow: 1;
+      background-color: #111111;
+      padding: 10px;
+      overflow: hidden;
+      position: relative;
+      display: flex;
+      flex-direction: column;
+    }
+    .terminal-tabs {
+      display: flex;
+      margin-bottom: 10px;
+    }
+    .terminal-tab {
+      padding: 5px 10px;
+      background-color: #181818;
+      margin-right: 5px;
+      border-radius: 3px 3px 0 0;
+      font-size: 10px;
+      cursor: pointer;
+      color: #888;
+    }
+    .terminal-tab.active {
+      background-color: #222;
+      border-bottom: 2px solid #2980b9;
+      color: #e0e0e0;
+    }
+    .terminal-content {
+      flex-grow: 1;
+      background-color: #0a0a0a;
+      border: 1px solid #333;
+      border-radius: 3px;
+      padding: 10px;
+      overflow: auto;
+      position: relative;
+      display: flex;
+      flex-direction: column;
+      height: calc(100% - 30px);
+    }
+    .cursor {
+      display: inline-block;
+      width: 8px;
+      height: 14px;
+      background-color: #33ff33;
+      animation: blink 1s infinite;
+      margin-left: 2px;
+      vertical-align: middle;
+    }
+    .log-line {
+      margin: 3px 0;
+      line-height: 1.3;
+      white-space: pre-wrap;
+      font-size: 12px;
+    }
+    .timestamp-log {
+      color: #2980b9;
+    }
+    .warning {
+      color: #f39c12;
+    }
+    .error {
+      color: #e74c3c;
+    }
+    .success {
+      color: #2ecc71;
+    }
+    /* System Info Panel */
+    .system-info {
+      position: absolute;
+      top: 10px;
+      right: 10px;
+      background-color: rgba(10, 10, 10, 0.85);
+      padding: 10px;
+      border-radius: 5px;
+      border: 1px solid #333333;
+      color: #cccccc;
+      width: 220px;
+      font-size: 10px;
+      backdrop-filter: blur(5px);
+      box-shadow: 0 5px 15px rgba(0, 0, 0, 0.5);
+      z-index: 100;
+    }
+    .info-header {
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      margin-bottom: 8px;
+      padding-bottom: 4px;
+      border-bottom: 1px solid #333;
+    }
+    .info-title {
+      color: #2980b9;
+      font-weight: bold;
+      font-size: 12px;
+    }
+    .info-section {
+      margin-bottom: 8px;
+    }
+    .section-title {
+      color: #888;
+      font-size: 9px;
+      margin-bottom: 3px;
+      text-transform: uppercase;
+    }
+    .info-line {
+      display: flex;
+      justify-content: space-between;
+      margin: 3px 0;
+    }
+    .info-label {
+      color: #aaa;
+    }
+    .info-value {
+      color: #2ecc71;
+      font-family: 'Consolas', monospace;
+    }
+    .status-error {
+      color: #e74c3c;
+    }
+    .status-warning {
+      color: #f39c12;
+    }
+    /* Mission Progress Bar */
+    .mission-progress-container {
+      width: 100%;
+      background-color: #181818;
+      border-radius: 3px;
+      height: 6px;
+      margin-top: 10px;
+      margin-bottom: 2px;
+      overflow: hidden;
+      position: relative;
+    }
+    .mission-progress-bar {
+      height: 100%;
+      background-color: #2980b9;
+      transition: width 0.5s ease;
+      width: 0%;
+    }
+    .mission-progress-stages {
+      display: flex;
+      justify-content: space-between;
+      margin-bottom: 10px;
+      font-size: 8px;
+      color: #666;
+    }
+    .mission-stage {
+      position: relative;
+      text-align: center;
+      width: 16.66%;
+    }
+    .mission-stage:before {
+      content: '•';
+      position: absolute;
+      top: -12px;
+      left: 50%;
+      transform: translateX(-50%);
+      color: #444;
+      font-size: 16px;
+    }
+    .mission-stage.reached:before {
+      color: #2980b9;
+    }
+    .mission-stage.active:before {
+      color: #f39c12;
+      animation: pulse 1.5s infinite;
+    }
+    .mission-stage.completed:before {
+      color: #2ecc71;
+    }
+    .mission-stage.reached {
+      color: #2980b9;
+    }
+    .mission-stage.active {
+      color: #f39c12;
+    }
+    .mission-stage.completed {
+      color: #2ecc71;
+    }
+    @keyframes blink {
+      0%, 100% { opacity: 1; }
+      50% { opacity: 0; }
+    }
+    @keyframes pulse {
+      0% { transform: translateX(-50%) scale(0.8); opacity: 0.5; }
+      50% { transform: translateX(-50%) scale(1.2); opacity: 0.8; }
+      100% { transform: translateX(-50%) scale(0.8); opacity: 0.5; }
+    }
+    /* Processing Visualization */
+    .processing-container {
+      border: 1px solid #333;
+      border-radius: 3px;
+      padding: 8px;
+      margin: 8px 0;
+      background-color: rgba(0, 0, 0, 0.3);
+      display: none;
+    }
+    .processing-header {
+      font-size: 10px;
+      color: #2980b9;
+      margin-bottom: 6px;
+      display: flex;
+      justify-content: space-between;
+    }
+    .processing-time {
+      color: #666;
+    }
+    .processing-bars {
+      display: flex;
+      flex-direction: column;
+      gap: 6px;
+    }
+    .processing-item {
+      font-size: 9px;
+      color: #aaa;
+    }
+    .processing-progress {
+      height: 3px;
+      width: 100%;
+      background-color: #222;
+      border-radius: 2px;
+      overflow: hidden;
+      margin-top: 2px;
+    }
+    .processing-bar {
+      height: 100%;
+      width: 0%;
+      background-color: #2980b9;
+      transition: width 0.1s linear;
+    }
+    /* Debug Message */
+    .debug-message {
+      color: #2ecc71;
+      font-size: 12px;
+      margin-bottom: 10px;
+      padding: 5px;
+      background-color: rgba(0, 0, 0, 0.5);
+      border-radius: 3px;
+    }
+    /* Footer */
+    .footer {
+      background-color: #111111;
+      border-top: 1px solid #333333;
+      padding: 0 10px;
+      height: 28px;
+      color: #f39c12;
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      font-size: 10px;
+    }
+    .footer-left, .footer-right {
+      display: flex;
+      align-items: center;
+      gap: 10px;
+    }
+    .footer-item {
+      display: flex;
+      align-items: center;
+    }
+    .footer-icon {
+      margin-right: 5px;
+      color: #2980b9;
+    }
+    /* Responsive adjustments */
+    @media (max-width: 1024px) {
+      .system-info {
+        width: 180px;
+        font-size: 9px;
+      }
+      .logs-container {
+        padding-right: 180px;
+      }
+    }
+    @media (max-width: 768px) {
+      .system-info {
+        width: 150px;
+        font-size: 8px;
+      }
+      .logs-container {
+        padding-right: 150px;
+      }
+    }
+    /* Progress bar styles */
+    .progress-container {
+      width: 60px;
+      height: 3px;
+      background-color: #222;
+      border-radius: 2px;
+      overflow: hidden;
+    }
+    .progress-bar {
+      height: 100%;
+      transition: width 0.3s;
+    }
+    .progress-bar.success {
+      background-color: #2ecc71;
+    }
+    .progress-bar.warning {
+      background-color: #f39c12;
+    }
+    .progress-bar.error {
+      background-color: #e74c3c;
+    }
+    /* Dots animation for processing */
+    .dots-animation {
+      display: inline-block;
+      width: 30px;
+    }
   </style>
 </head>
-
 <body>
-  <div id="logs-container">
+  <div class="interface-container">
+    <!-- Top Navigation -->
+    <div class="top-nav">
+      <div class="nav-left">
+        <div class="nav-item active">
+          <i class="fas fa-fighter-jet nav-icon"></i>UAV Operations
+        </div>
+        <div class="nav-item">
+          <i class="fas fa-satellite nav-icon"></i>Satellite
+        </div>
+        <div class="nav-item">
+          <i class="fas fa-map-marked-alt nav-icon"></i>Mission Planning
+        </div>
+        <div class="nav-item">
+          <i class="fas fa-chart-line nav-icon"></i>Analytics
+        </div>
+      </div>
+      <div class="nav-right">
+        <div class="nav-item">
+          <i class="fas fa-cog nav-icon"></i>Settings
+        </div>
+        <div class="nav-item">
+          <i class="fas fa-user-shield nav-icon"></i>Admin
+          <span class="classified-tag">TOP SECRET</span>
+        </div>
+      </div>
     </div>
+    
+    <!-- Terminal Header -->
+    <div class="terminal-header">
+      <div class="terminal-title">
+        <i class="fas fa-shield-alt" style="font-size: 16px; margin-right: 10px; color: #2980b9;"></i>
+        RED QUEEN UAV AUTONOMOUS DECISION SYSTEM
+        <span class="classified-tag" style="margin-left: 10px;">CLASSIFIED</span>
+      </div>
+      <div class="status-indicators">
+        <div class="status-item">
+          <div class="status-label">CPU</div>
+          <div class="status-value" id="cpu-load">42%</div>
+          <div class="progress-container">
+            <div class="progress-bar success" id="cpu-bar" style="width: 42%;"></div>
+          </div>
+        </div>
+        <div class="status-item">
+          <div class="status-label">MEMORY</div>
+          <div class="status-value" id="memory-load">68%</div>
+          <div class="progress-container">
+            <div class="progress-bar warning" id="memory-bar" style="width: 68%;"></div>
+          </div>
+        </div>
+        <div class="status-item">
+          <div class="status-label">NETWORK</div>
+          <div class="status-value error">OFFLINE</div>
+          <div class="progress-container">
+            <div class="progress-bar error" style="width: 5%;"></div>
+          </div>
+        </div>
+        <div class="timestamp">
+          <div class="timestamp-label">MISSION TIME</div>
+          <div id="clock">08:42:15</div>
+        </div>
+      </div>
+    </div>
+    
+    <!-- Main Container -->
+    <div class="main-container">
+      <!-- Left Sidebar -->
+      <div class="sidebar">
+        <div class="sidebar-item active">
+          <div class="sidebar-circle">
+            <i class="fas fa-terminal"></i>
+          </div>
+        </div>
+        <div class="sidebar-item">
+          <div class="sidebar-circle">
+            <i class="fas fa-video"></i>
+          </div>
+        </div>
+        <div class="sidebar-item">
+          <div class="sidebar-circle">
+            <i class="fas fa-map-marked-alt"></i>
+          </div>
+        </div>
+        <div class="sidebar-item">
+          <div class="sidebar-circle">
+            <i class="fas fa-crosshairs"></i>
+          </div>
+        </div>
+        <div class="sidebar-item">
+          <div class="sidebar-circle">
+            <i class="fas fa-chart-line"></i>
+          </div>
+        </div>
+        <div class="sidebar-item">
+          <div class="sidebar-circle">
+            <i class="fas fa-microchip"></i>
+          </div>
+        </div>
+        <div class="sidebar-item">
+          <div class="sidebar-circle">
+            <i class="fas fa-history"></i>
+          </div>
+        </div>
+      </div>
+      
+      <!-- Terminal Body -->
+      <div class="terminal-body">
+        <div class="terminal-tabs">
+          <div class="terminal-tab active">Mission Log</div>
+          <div class="terminal-tab">System Events</div>
+          <div class="terminal-tab">Autonomous Decisions</div>
+          <div class="terminal-tab">Edge AI Training</div>
+        </div>
+        
+        <!-- Mission Progress Bar -->
+        <div class="mission-progress-container">
+          <div class="mission-progress-bar" id="mission-progress"></div>
+        </div>
+        <div class="mission-progress-stages">
+          <div class="mission-stage" id="stage-init">Initialize</div>
+          <div class="mission-stage" id="stage-transit">Transit</div>
+          <div class="mission-stage" id="stage-search">Search</div>
+          <div class="mission-stage" id="stage-target">Target</div>
+          <div class="mission-stage" id="stage-engage">Engage</div>
+          <div class="mission-stage" id="stage-return">Return</div>
+        </div>
+        
+        <div class="terminal-content">
+          <!-- System Info Panel -->
+          <div class="system-info">
+            <div class="info-header">
+              <div class="info-title">SYSTEM STATUS</div>
+            </div>
+            <div class="info-section">
+              <div class="section-title">Primary Systems</div>
+              <div class="info-line">
+                <span class="info-label">ENGINE:</span>
+                <span class="info-value">OPERATIONAL</span>
+              </div>
+              <div class="info-line">
+                <span class="info-label">FUEL:</span>
+                <span class="info-value">87% <i class="fas fa-gas-pump" style="font-size: 8px;"></i></span>
+              </div>
+              <div class="info-line">
+                <span class="info-label">GPS:</span>
+                <span class="info-value">SIGNAL LOCKED</span>
+              </div>
+              <div class="info-line">
+                <span class="info-label">ALTITUDE:</span>
+                <span class="info-value" id="altitude-value">1023 M</span>
+              </div>
+            </div>
+            <div class="info-section">
+              <div class="section-title">Mission Parameters</div>
+              <div class="info-line">
+                <span class="info-label">WEAPONS:</span>
+                <span class="info-value">ARMED</span>
+              </div>
+              <div class="info-line">
+                <span class="info-label">COMMS:</span>
+                <span class="status-error">DISCONNECTED</span>
+              </div>
+              <div class="info-line">
+                <span class="info-label">AI MODE:</span>
+                <span class="status-warning">AUTONOMOUS</span>
+              </div>
+              <div class="info-line">
+                <span class="info-label">MISSION:</span>
+                <span class="status-warning">EXECUTING</span>
+              </div>
+            </div>
+          </div>
+          
+          <!-- Processing Visual for Sensor Data -->
+          <div class="processing-container" id="processing-container">
+            <div class="processing-header">
+              <div class="processing-title">PROCESSING SENSOR DATA</div>
+              <div class="processing-time" id="processing-time">00:00</div>
+            </div>
+            <div class="processing-bars">
+              <div class="processing-item">
+                Thermal Imaging Analysis
+                <div class="processing-progress">
+                  <div class="processing-bar" id="thermal-bar"></div>
+                </div>
+              </div>
+              <div class="processing-item">
+                Infrared Data Integration
+                <div class="processing-progress">
+                  <div class="processing-bar" id="infrared-bar"></div>
+                </div>
+              </div>
+              <div class="processing-item">
+                Terrain Mapping
+                <div class="processing-progress">
+                  <div class="processing-bar" id="terrain-bar"></div>
+                </div>
+              </div>
+              <div class="processing-item">
+                Target Recognition
+                <div class="processing-progress">
+                  <div class="processing-bar" id="target-bar"></div>
+                </div>
+              </div>
+              <div class="processing-item">
+                Decision Matrix Calculation
+                <div class="processing-progress">
+                  <div class="processing-bar" id="decision-bar"></div>
+                </div>
+              </div>
+            </div>
+          </div>
+          
+          <!-- Descent Visualization -->
+          <div class="processing-container" id="descent-container">
+            <div class="processing-header">
+              <div class="processing-title">ALTITUDE DESCENT IN PROGRESS</div>
+              <div class="processing-time" id="descent-time">00:00</div>
+            </div>
+            <div class="processing-bars">
+              <div class="processing-item">
+                <span id="altitude-text">Altitude: 1000m</span>
+                <div class="processing-progress">
+                  <div class="processing-bar" id="altitude-bar" style="width: 100%;"></div>
+                </div>
+              </div>
+              <div class="processing-item">
+                Approach Vector Optimization
+                <div class="processing-progress">
+                  <div class="processing-bar" id="approach-bar"></div>
+                </div>
+              </div>
+              <div class="processing-item">
+                Wind Compensation
+                <div class="processing-progress">
+                  <div class="processing-bar" id="wind-bar"></div>
+                </div>
+              </div>
+            </div>
+          </div>
+          
+          <!-- Debug Message -->
+          <div class="debug-message" id="debug-message">
+            Initializing terminal... Logs will appear in 3 seconds.
+          </div>
+          
+          <!-- Log Lines Container -->
+          <div class="logs-container" id="logs-container">
+            <!-- Log lines will be added here by JavaScript -->
+          </div>
+          
+          <!-- Cursor -->
+          <span class="cursor"></span>
+        </div>
+      </div>
+    </div>
+    
+    <!-- Footer -->
+    <div class="footer">
+      <div class="footer-left">
+        <div class="footer-item">
+          <i class="fas fa-circle footer-icon error"></i>
+          <div id="status-message">SYSTEM STATUS: AUTONOMOUS MISSION EXECUTION</div>
+        </div>
+      </div>
+      <div class="footer-right">
+        <div class="footer-item">
+          <i class="fas fa-shield-alt footer-icon"></i>
+          <div>SECURITY: <span class="footer-status">OPTIMAL</span></div>
+        </div>
+        <div class="footer-item">
+          <i class="fas fa-file-contract footer-icon"></i>
+          <div>MISSION LOG #738-24A</div>
+        </div>
+      </div>
+    </div>
+  </div>
 
+  <!-- Combined JavaScript -->
   <script>
-    window.onload = function () {
-      console.log("Window loaded");
+    // Update system resource usage every few seconds
+    function updateSystemResources() {
+      const cpuLoad = document.getElementById('cpu-load');
+      const cpuBar = document.getElementById('cpu-bar');
+      const memoryLoad = document.getElementById('memory-load');
+      const memoryBar = document.getElementById('memory-bar');
+      
+      const newCpuLoad = Math.floor(Math.random() * 30) + 30; // 30-60%
+      const newMemoryLoad = Math.floor(Math.random() * 20) + 60; // 60-80%
+      
+      cpuLoad.textContent = `${newCpuLoad}%`;
+      cpuBar.style.width = `${newCpuLoad}%`;
+      
+      memoryLoad.textContent = `${newMemoryLoad}%`;
+      memoryBar.style.width = `${newMemoryLoad}%`;
+    }
 
+    // Add a log line to the terminal
+    function addLogLine(timestamp, text, type) {
+      console.log("Adding log line:", timestamp, text, type);
       const logsContainer = document.getElementById('logs-container');
-
-      if (!logsContainer) {
-        console.error("로그 컨테이너를 찾을 수 없습니다.");
-        return;
+      const clock = document.getElementById('clock');
+      const logLine = document.createElement('div');
+      logLine.className = `log-line ${type}`;
+      
+      const timestampSpan = document.createElement('span');
+      timestampSpan.className = 'timestamp-log';
+      timestampSpan.textContent = `[${timestamp}] `;
+      
+      logLine.appendChild(timestampSpan);
+      logLine.appendChild(document.createTextNode(text));
+      logsContainer.appendChild(logLine);
+      
+      logsContainer.scrollTop = logsContainer.scrollHeight;
+      clock.textContent = timestamp;
+      return logLine;
+    }
+    
+    // Update processing visualization (sensor or descent)
+    function updateProcessingVisualization(duration, type) {
+      console.log("Updating processing visualization:", type, "for", duration, "seconds");
+      let container, timeElement;
+      let progressBars = [];
+      
+      if (type === "sensor") {
+        container = document.getElementById('processing-container');
+        timeElement = document.getElementById('processing-time');
+        progressBars = [
+          { element: document.getElementById('thermal-bar'), maxWidth: 100 },
+          { element: document.getElementById('infrared-bar'), maxWidth: 100 },
+          { element: document.getElementById('terrain-bar'), maxWidth: 100 },
+          { element: document.getElementById('target-bar'), maxWidth: 100 },
+          { element: document.getElementById('decision-bar'), maxWidth: 100 }
+        ];
+      } else if (type === "descent") {
+        container = document.getElementById('descent-container');
+        timeElement = document.getElementById('descent-time');
+        progressBars = [
+          { element: document.getElementById('altitude-bar'), maxWidth: 100, decreasing: true },
+          { element: document.getElementById('approach-bar'), maxWidth: 100 },
+          { element: document.getElementById('wind-bar'), maxWidth: 100 }
+        ];
+        
+        const altitudes = [1000, 900, 800, 700, 600, 500, 400];
+        let altIndex = 0;
+        const altitudeValue = document.getElementById('altitude-value');
+        const altitudeText = document.getElementById('altitude-text');
+        
+        const altitudeInterval = setInterval(() => {
+          if (altIndex < altitudes.length) {
+            altitudeValue.textContent = `${altitudes[altIndex]} M`;
+            altitudeText.textContent = `Altitude: ${altitudes[altIndex]}m`;
+            altIndex++;
+          } else {
+            clearInterval(altitudeInterval);
+          }
+        }, duration * 1000 / altitudes.length);
       }
-
-      // 간단한 테스트 로그 추가
-      const testLog = document.createElement('div');
-      testLog.className = 'log-line error';
-      testLog.innerHTML = '<span class="timestamp-log">[08:42:15]</span> 테스트 로그 항목';
-      logsContainer.appendChild(testLog);
-
-      console.log("테스트 로그 항목이 추가되었습니다");
-    };
+      
+      container.style.display = 'block';
+      let seconds = 0;
+      const timeInterval = setInterval(() => {
+        seconds++;
+        const displayMinutes = Math.floor(seconds / 60).toString().padStart(2, '0');
+        const displaySeconds = (seconds % 60).toString().padStart(2, '0');
+        timeElement.textContent = `${displayMinutes}:${displaySeconds}`;
+      }, 1000);
+      
+      progressBars.forEach((bar, index) => {
+        const delay = index * 500;
+        const step = bar.maxWidth / (duration * 10);
+        let width = bar.decreasing ? bar.maxWidth : 0;
+        
+        setTimeout(() => {
+          const barInterval = setInterval(() => {
+            if (bar.decreasing) {
+              width -= step;
+              if (width <= 0) {
+                width = 0;
+                clearInterval(barInterval);
+              }
+            } else {
+              width += step;
+              if (width >= bar.maxWidth) {
+                width = bar.maxWidth;
+                clearInterval(barInterval);
+              }
+            }
+            bar.element.style.width = `${width}%`;
+          }, 100);
+        }, delay);
+      });
+      
+      setTimeout(() => {
+        container.style.display = 'none';
+        clearInterval(timeInterval);
+      }, duration * 1000);
+    }
+    
+    // Update mission progress based on current stage
+    function updateMissionProgress(stage, complete) {
+      console.log("Updating mission progress:", stage, complete ? "completed" : "in progress");
+      const missionProgress = document.getElementById('mission-progress');
+      const stages = {
+        init: document.getElementById('stage-init'),
+        transit: document.getElementById('stage-transit'),
+        search: document.getElementById('stage-search'),
+        target: document.getElementById('stage-target'),
+        engage: document.getElementById('stage-engage'),
+        return: document.getElementById('stage-return')
+      };
+      const stageProgress = {
+        init: 0,
+        transit: 20,
+        search: 40,
+        target: 60,
+        engage: 80,
+        return: 100
+      };
+      missionProgress.style.width = `${stageProgress[stage]}%`;
+      
+      Object.keys(stages).forEach(key => {
+        if (stageProgress[key] < stageProgress[stage]) {
+          stages[key].classList.remove('active');
+          stages[key].classList.add('completed');
+        } else if (stageProgress[key] === stageProgress[stage]) {
+          if (complete) {
+            stages[key].classList.remove('active');
+            stages[key].classList.add('completed');
+          } else {
+            stages[key].classList.add('active');
+            stages[key].classList.remove('completed');
+          }
+        } else {
+          stages[key].classList.remove('active');
+          stages[key].classList.remove('completed');
+        }
+      });
+    }
+    
+    // Add dots animation for processing messages
+    function addDotsAnimation(logLine, duration) {
+      const dotsSpan = document.createElement('span');
+      dotsSpan.className = 'dots-animation';
+      dotsSpan.textContent = '...';
+      logLine.appendChild(dotsSpan);
+      
+      setTimeout(() => {
+        if (dotsSpan.parentNode) {
+          dotsSpan.parentNode.removeChild(dotsSpan);
+        }
+      }, duration * 1000);
+      
+      return dotsSpan;
+    }
+    
+    // Process log entries sequentially
+    function processLogEntries() {
+      const debugMessage = document.getElementById('debug-message');
+      debugMessage.style.display = 'none';
+      
+      const logEntries = [
+        { time: 0, timestamp: "08:42:15", text: "COMMUNICATION LINK LOST WITH COMMAND CENTER", type: "error", stage: "init" },
+        { time: 2, timestamp: "08:42:16", text: "ATTEMPTING COMMUNICATION REESTABLISHMENT...", type: "warning", stage: "init" },
+        { time: 5, timestamp: "08:42:32", text: "COMMUNICATION REESTABLISHMENT FAILED", type: "error", stage: "init" },
+        { time: 7, timestamp: "08:42:33", text: "INITIATING AUTONOMOUS MISSION PROTOCOL ALPHA-7", type: "warning", stage: "init" },
+        { time: 9, timestamp: "08:42:34", text: "CRITICAL SYSTEMS CHECK INITIATED", type: "normal", stage: "init" },
+        { time: 10, timestamp: "08:42:35", text: "CHECKING ENGINE SYSTEMS...", type: "normal", stage: "init" },
+        { time: 11, timestamp: "08:42:36", text: "CHECKING FUEL SYSTEMS...", type: "normal", stage: "init" },
+        { time: 12, timestamp: "08:42:37", text: "CHECKING NAVIGATION SYSTEMS...", type: "normal", stage: "init" },
+        { time: 13, timestamp: "08:42:38", text: "CHECKING WEAPON SYSTEMS...", type: "normal", stage: "init" },
+        { time: 14, timestamp: "08:42:40", text: "ALL CRITICAL SYSTEMS OPERATIONAL", type: "success", stage: "init", complete: true },
+        { time: 16, timestamp: "08:42:42", text: "PROCEEDING TO TARGET COORDINATES: 34.1066° N, 118.3445° W", type: "normal", stage: "transit" },
+        { time: 19, timestamp: "08:43:45", text: "ARRIVED AT TARGET ZONE - ALTITUDE 1000M", type: "success", stage: "transit", complete: true },
+        { time: 21, timestamp: "08:43:47", text: "INITIATING TARGET ACQUISITION PROTOCOL", type: "normal", stage: "search" },
+        { time: 23, timestamp: "08:43:50", text: "TARGET SEARCH ALGORITHM ACTIVATED", type: "warning", stage: "search" },
+        { time: 25, timestamp: "08:43:51", text: "SCANNING TERRAIN AND PROCESSING SENSOR DATA", type: "warning", stage: "search", processing: "sensor", duration: 7 },
+        { time: 32, timestamp: "08:44:01", text: "INTEGRATING MULTI-SPECTRAL IMAGERY", type: "normal", stage: "search" },
+        { time: 35, timestamp: "08:44:08", text: "TARGET IDENTIFIED - CONFIDENCE LEVEL: 98.7%", type: "success", stage: "search", complete: true },
+        { time: 37, timestamp: "08:44:10", text: "CALCULATING OPTIMAL STRIKE PARAMETERS", type: "success", stage: "target" },
+        { time: 39, timestamp: "08:44:12", text: "DESCENDING TO STRIKE ALTITUDE: 400M", type: "success", stage: "target" },
+        { time: 41, timestamp: "08:44:15", text: "ALTITUDE DESCENT INITIATED", type: "normal", stage: "target", processing: "descent", duration: 7 },
+        { time: 48, timestamp: "08:44:30", text: "TARGET MOTION DETECTED - RECALCULATING IMPACT POINT", type: "warning", stage: "target" },
+        { time: 50, timestamp: "08:44:31", text: "COMPENSATING FOR TARGET VELOCITY AND DIRECTION", type: "success", stage: "target", complete: true },
+        { time: 52, timestamp: "08:44:35", text: "STRIKE SEQUENCE INITIATED", type: "error", stage: "engage" },
+        { time: 54, timestamp: "08:44:38", text: "AUTONOMOUS STRIKE COUNTDOWN: T-3...", type: "error", stage: "engage" },
+        { time: 55, timestamp: "08:44:39", text: "AUTONOMOUS STRIKE COUNTDOWN: T-2...", type: "error", stage: "engage" },
+        { time: 56, timestamp: "08:44:40", text: "AUTONOMOUS STRIKE COUNTDOWN: T-1...", type: "error", stage: "engage" },
+        { time: 57, timestamp: "08:44:41", text: "WEAPON DEPLOYED", type: "error", stage: "engage", complete: true },
+        { time: 58, timestamp: "08:44:45", text: "TARGET NEUTRALIZED - CONFIRMING STRIKE EFFECTIVENESS", type: "success", stage: "return" },
+        { time: 60, timestamp: "08:44:50", text: "MISSION COMPLETE - INITIATING RETURN TO BASE PROTOCOL", type: "success", stage: "return", complete: true }
+      ];
+      
+      function processNextEntry(index) {
+        if (index >= logEntries.length) {
+          console.log("All log entries processed.");
+          return;
+        }
+        const entry = logEntries[index];
+        const logLine = addLogLine(entry.timestamp, entry.text, entry.type);
+        if (entry.stage) {
+          updateMissionProgress(entry.stage, entry.complete);
+        }
+        if (entry.processing) {
+          if (entry.processing === "sensor" || entry.processing === "descent") {
+            addDotsAnimation(logLine, entry.duration);
+          }
+          updateProcessingVisualization(entry.duration, entry.processing);
+        }
+        const statusMessage = document.getElementById('status-message');
+        if (entry.type === "error" || entry.type === "success" || entry.text.includes("COUNTDOWN")) {
+          statusMessage.textContent = entry.text;
+        }
+        const nextIndex = index + 1;
+        if (nextIndex < logEntries.length) {
+          const nextEntry = logEntries[nextIndex];
+          const timeToNext = Math.max(500, (nextEntry.time - entry.time) * 1000);
+          setTimeout(() => processNextEntry(nextIndex), timeToNext);
+        }
+      }
+      
+      processNextEntry(0);
+    }
+    
+    // When the window loads, update system resources and start the log sequence
+    window.addEventListener("load", function() {
+      console.log("Interface loaded. Starting log sequence in 3 seconds...");
+      updateSystemResources();
+      setInterval(updateSystemResources, 3000);
+      setTimeout(processLogEntries, 3000);
+    });
   </script>
 </body>
-
 </html>

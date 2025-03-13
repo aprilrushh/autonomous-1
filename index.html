@@ -1,12 +1,18 @@
 <!DOCTYPE html>
 <html lang="en">
 <head>
-  <meta charset="UTF-8">
-  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
   <title>RED QUEEN UAV Command & Control System</title>
-  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.2/css/all.min.css" integrity="sha512-z3gLpd7yknf1YoNbCzqRKc4qyor8gaKU1qmn+CShxbuBusANI9QpRohGBreCFkKxLhei6S9CQXFEbbKuqLg0DA==" crossorigin="anonymous" referrerpolicy="no-referrer" />
+  <link
+    rel="stylesheet"
+    href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.2/css/all.min.css"
+    integrity="sha512-z3gLpd7yknf1YoNbCzqRKc4qyor8gaKU1qmn+CShxbuBusANI9QpRohGBreCFkKxLhei6S9CQXFEbbKuqLg0DA=="
+    crossorigin="anonymous"
+    referrerpolicy="no-referrer"
+  />
   <style>
-    /* Global styles */
+    /* 기본 스타일 */
     * {
       margin: 0;
       padding: 0;
@@ -16,14 +22,12 @@
     body {
       background-color: #0a0a0a;
       color: #e0e0e0;
-      margin: 0;
-      padding: 0;
       display: flex;
       flex-direction: column;
       height: 100vh;
       overflow: hidden;
     }
-    /* Top Navigation */
+    /* 상단 네비게이션 */
     .top-nav {
       background-color: #181818;
       border-bottom: 1px solid #333;
@@ -34,7 +38,8 @@
       align-items: center;
       font-size: 10px;
     }
-    .nav-left, .nav-right {
+    .nav-left,
+    .nav-right {
       display: flex;
       align-items: center;
     }
@@ -67,7 +72,7 @@
       font-weight: bold;
       margin-left: 5px;
     }
-    /* Terminal Header */
+    /* 터미널 헤더 */
     .terminal-header {
       background-color: #111111;
       border-bottom: 1px solid #333333;
@@ -108,11 +113,6 @@
     .status-value.error {
       color: #e74c3c;
     }
-    .status-bar {
-      height: 3px;
-      border-radius: 2px;
-      margin-top: 2px;
-    }
     .timestamp {
       color: #cccccc;
       margin-right: 10px;
@@ -126,13 +126,13 @@
       color: #666;
       margin-bottom: 2px;
     }
-    /* Main Container */
+    /* 메인 컨테이너 */
     .main-container {
       display: flex;
       flex-grow: 1;
       overflow: hidden;
     }
-    /* Sidebar */
+    /* 사이드바 */
     .sidebar {
       width: 40px;
       background-color: #181818;
@@ -180,7 +180,7 @@
     .sidebar-item.active .sidebar-circle {
       border-color: #2980b9;
     }
-    /* Terminal Body */
+    /* 터미널 바디 */
     .terminal-body {
       flex-grow: 1;
       background-color: #0a0a0a;
@@ -238,7 +238,7 @@
       white-space: pre-wrap;
       font-size: 12px;
     }
-    /* Reasoning logs styling */
+    /* reasoning 로그 스타일 */
     .log-line.reasoning {
       color: #9b59b6;
       font-style: italic;
@@ -255,7 +255,7 @@
     .success {
       color: #2ecc71;
     }
-    /* System Info Panel */
+    /* 시스템 정보 패널 */
     .system-info {
       position: absolute;
       top: 10px;
@@ -311,7 +311,7 @@
     .status-warning {
       color: #f39c12;
     }
-    /* Mission Progress Bar */
+    /* 미션 진행도 바 */
     .mission-progress-container {
       width: 100%;
       background-color: #181818;
@@ -369,15 +369,29 @@
       color: #2ecc71;
     }
     @keyframes blink {
-      0%, 100% { opacity: 1; }
-      50% { opacity: 0; }
+      0%,
+      100% {
+        opacity: 1;
+      }
+      50% {
+        opacity: 0;
+      }
     }
     @keyframes pulse {
-      0% { transform: translateX(-50%) scale(0.8); opacity: 0.5; }
-      50% { transform: translateX(-50%) scale(1.2); opacity: 0.8; }
-      100% { transform: translateX(-50%) scale(0.8); opacity: 0.5; }
+      0% {
+        transform: translateX(-50%) scale(0.8);
+        opacity: 0.5;
+      }
+      50% {
+        transform: translateX(-50%) scale(1.2);
+        opacity: 0.8;
+      }
+      100% {
+        transform: translateX(-50%) scale(0.8);
+        opacity: 0.5;
+      }
     }
-    /* Processing Visualization */
+    /* 처리 비주얼 */
     .processing-container {
       border: 1px solid #333;
       border-radius: 3px;
@@ -419,7 +433,7 @@
       background-color: #2980b9;
       transition: width 0.1s linear;
     }
-    /* Debug Message */
+    /* 디버그 메시지 */
     .debug-message {
       color: #2ecc71;
       font-size: 12px;
@@ -428,7 +442,7 @@
       background-color: rgba(0, 0, 0, 0.5);
       border-radius: 3px;
     }
-    /* Footer */
+    /* 푸터 */
     .footer {
       background-color: #111111;
       border-top: 1px solid #333333;
@@ -440,7 +454,8 @@
       align-items: center;
       font-size: 10px;
     }
-    .footer-left, .footer-right {
+    .footer-left,
+    .footer-right {
       display: flex;
       align-items: center;
       gap: 10px;
@@ -453,7 +468,6 @@
       margin-right: 5px;
       color: #2980b9;
     }
-    /* Responsive adjustments */
     @media (max-width: 1024px) {
       .system-info {
         width: 180px;
@@ -466,7 +480,6 @@
         font-size: 8px;
       }
     }
-    /* Progress bar styles */
     .progress-container {
       width: 60px;
       height: 3px;
@@ -487,7 +500,6 @@
     .progress-bar.error {
       background-color: #e74c3c;
     }
-    /* Dots animation for processing */
     .dots-animation {
       display: inline-block;
       width: 30px;
@@ -496,7 +508,7 @@
 </head>
 <body>
   <div class="interface-container">
-    <!-- Top Navigation -->
+    <!-- 상단 네비게이션 -->
     <div class="top-nav">
       <div class="nav-left">
         <div class="nav-item active">
@@ -511,7 +523,7 @@
         <div class="nav-item">
           <i class="fas fa-chart-line nav-icon"></i>Analytics
         </div>
-        <!-- Autonomous Decision Menu -->
+        <!-- Autonomous Decision 메뉴 -->
         <div class="nav-item" id="autonomous-decision-nav">
           <i class="fas fa-robot nav-icon"></i>Autonomous Decision
         </div>
@@ -527,7 +539,7 @@
       </div>
     </div>
     
-    <!-- Terminal Header -->
+    <!-- 터미널 헤더 -->
     <div class="terminal-header">
       <div class="terminal-title">
         <i class="fas fa-shield-alt" style="font-size: 16px; margin-right: 10px; color: #2980b9;"></i>
@@ -563,9 +575,9 @@
       </div>
     </div>
     
-    <!-- Main Container -->
+    <!-- 메인 컨테이너 -->
     <div class="main-container">
-      <!-- Left Sidebar -->
+      <!-- 왼쪽 사이드바 -->
       <div class="sidebar">
         <div class="sidebar-item active">
           <div class="sidebar-circle">
@@ -604,7 +616,7 @@
         </div>
       </div>
       
-      <!-- Terminal Body -->
+      <!-- 터미널 바디 -->
       <div class="terminal-body">
         <div class="terminal-tabs">
           <div class="terminal-tab active">Mission Log</div>
@@ -613,7 +625,7 @@
           <div class="terminal-tab">Edge AI Training</div>
         </div>
         
-        <!-- Mission Progress Bar -->
+        <!-- 미션 진행도 바 -->
         <div class="mission-progress-container">
           <div class="mission-progress-bar" id="mission-progress"></div>
         </div>
@@ -627,7 +639,7 @@
         </div>
         
         <div class="terminal-content">
-          <!-- System Info Panel -->
+          <!-- 시스템 정보 패널 -->
           <div class="system-info">
             <div class="info-header">
               <div class="info-title">SYSTEM STATUS</div>
@@ -640,7 +652,9 @@
               </div>
               <div class="info-line">
                 <span class="info-label">FUEL:</span>
-                <span class="info-value">87% <i class="fas fa-gas-pump" style="font-size: 8px;"></i></span>
+                <span class="info-value"
+                  >87% <i class="fas fa-gas-pump" style="font-size: 8px;"></i></span
+                >
               </div>
               <div class="info-line">
                 <span class="info-label">GPS:</span>
@@ -672,7 +686,7 @@
             </div>
           </div>
           
-          <!-- Processing Visual for Sensor Data -->
+          <!-- 센서 처리 비주얼 -->
           <div class="processing-container" id="processing-container">
             <div class="processing-header">
               <div class="processing-title">PROCESSING SENSOR DATA</div>
@@ -712,7 +726,7 @@
             </div>
           </div>
           
-          <!-- Descent Visualization -->
+          <!-- 고도강하 비주얼 -->
           <div class="processing-container" id="descent-container">
             <div class="processing-header">
               <div class="processing-title">ALTITUDE DESCENT IN PROGRESS</div>
@@ -740,23 +754,21 @@
             </div>
           </div>
           
-          <!-- Debug Message -->
+          <!-- 디버그 메시지 -->
           <div class="debug-message" id="debug-message">
             Initializing terminal... Logs will appear in 3 seconds.
           </div>
           
-          <!-- Log Lines Container -->
-          <div class="logs-container" id="logs-container">
-            <!-- Log lines will be added here by JavaScript -->
-          </div>
+          <!-- 로그 라인 컨테이너 -->
+          <div class="logs-container" id="logs-container"></div>
           
-          <!-- Cursor -->
+          <!-- 커서 -->
           <span class="cursor"></span>
         </div>
       </div>
     </div>
     
-    <!-- Footer -->
+    <!-- 푸터 -->
     <div class="footer">
       <div class="footer-left">
         <div class="footer-item">
@@ -767,7 +779,9 @@
       <div class="footer-right">
         <div class="footer-item">
           <i class="fas fa-shield-alt footer-icon"></i>
-          <div>SECURITY: <span class="footer-status">OPTIMAL</span></div>
+          <div>
+            SECURITY: <span class="footer-status">OPTIMAL</span>
+          </div>
         </div>
         <div class="footer-item">
           <i class="fas fa-file-contract footer-icon"></i>
@@ -777,9 +791,9 @@
     </div>
   </div>
 
-  <!-- Combined JavaScript -->
+  <!-- 통합 JavaScript -->
   <script>
-    // Update system resource usage every 3 seconds
+    // 자원 사용률 업데이트
     function updateSystemResources() {
       const cpuLoad = document.getElementById('cpu-load');
       const cpuBar = document.getElementById('cpu-bar');
@@ -796,7 +810,7 @@
       memoryBar.style.width = `${newMemoryLoad}%`;
     }
 
-    // Add a log line with timestamp; supports various types (normal, warning, error, success, reasoning)
+    // 로그 라인 추가
     function addLogLine(timestamp, text, type) {
       const logsContainer = document.getElementById('logs-container');
       const clock = document.getElementById('clock');
@@ -811,13 +825,11 @@
       logLine.appendChild(document.createTextNode(text));
       logsContainer.appendChild(logLine);
       
-      // Scroll to bottom
       logsContainer.scrollTop = logsContainer.scrollHeight;
-      // Update clock display
       clock.textContent = timestamp;
     }
     
-    // Update processing visualization (sensor or descent)
+    // 처리 비주얼 (sensor/descent)
     function updateProcessingVisualization(duration, type) {
       let container, timeElement;
       let progressBars = [];
@@ -854,7 +866,7 @@
           } else {
             clearInterval(altitudeInterval);
           }
-        }, duration * 1000 / altitudes.length);
+        }, (duration * 1000) / altitudes.length);
       }
       
       container.style.display = 'block';
@@ -897,7 +909,7 @@
       }, duration * 1000);
     }
     
-    // Update mission progress based on current stage
+    // 미션 진행도 업데이트
     function updateMissionProgress(stage, complete) {
       const missionProgress = document.getElementById('mission-progress');
       const stages = {
@@ -918,7 +930,7 @@
       };
       missionProgress.style.width = `${stageProgress[stage]}%`;
       
-      Object.keys(stages).forEach(key => {
+      Object.keys(stages).forEach((key) => {
         if (stageProgress[key] < stageProgress[stage]) {
           stages[key].classList.remove('active');
           stages[key].classList.add('completed');
@@ -937,7 +949,7 @@
       });
     }
     
-    // Add dots animation for processing messages (if needed)
+    // 점(.) 애니메이션
     function addDotsAnimation(logLine, duration) {
       const dotsSpan = document.createElement('span');
       dotsSpan.className = 'dots-animation';
@@ -949,11 +961,9 @@
           dotsSpan.parentNode.removeChild(dotsSpan);
         }
       }, duration * 1000);
-      
-      return dotsSpan;
     }
     
-    // Process the full sequential mission log entries (existing functionality)
+    // 기본 전체 미션 로그
     function processLogEntries() {
       const debugMessage = document.getElementById('debug-message');
       debugMessage.style.display = 'none';
@@ -1002,7 +1012,11 @@
           updateProcessingVisualization(entry.duration, entry.processing);
         }
         const statusMessage = document.getElementById('status-message');
-        if (entry.type === "error" || entry.type === "success" || entry.text.includes("COUNTDOWN")) {
+        if (
+          entry.type === "error" ||
+          entry.type === "success" ||
+          entry.text.includes("COUNTDOWN")
+        ) {
           statusMessage.textContent = entry.text;
         }
         const nextIndex = index + 1;
@@ -1016,36 +1030,92 @@
       processNextEntry(0);
     }
     
-    // Autonomous Decision Scenario:
-    // Extended reasoning scenario including multiple factors such as battery, weather, vision, GPS, IMU,
-    // optimal altitude calculation, tunnel detection, engagement window, and target speed analysis.
+    // Autonomous Decision 시나리오 (긴 reasoning 포함)
     function showAutonomousDecisionScenario() {
       const logsContainer = document.getElementById('logs-container');
       const debugMessage = document.getElementById('debug-message');
       const statusMessage = document.getElementById('status-message');
       
-      // Clear any existing logs and hide debug message
       logsContainer.innerHTML = '';
       if (debugMessage) debugMessage.style.display = 'none';
       
-      // Extended reasoning scenario logs
       const scenarioLogs = [
         { timestamp: "09:00:00", text: "COMMUNICATION LINK LOST WITH COMMAND CENTER", type: "error" },
-        { timestamp: "09:00:02", text: "Entering autonomous mode. System health check: Battery 78%, Weather clear, Vision optimal, GPS locked, IMU stable.", type: "reasoning" },
-        { timestamp: "09:00:05", text: "Autonomous Control Protocol engaged. Analyzing environmental and sensor data...", type: "warning" },
-        { timestamp: "09:00:08", text: "Sensor verification: Weather conditions favorable; no obstacles detected; sensor suite operational.", type: "reasoning" },
-        { timestamp: "09:00:12", text: "Decision: Proceed with autonomous mission despite HQ comms loss.", type: "success" },
-        { timestamp: "09:00:15", text: "Calculating optimal strike altitude. Analysis indicates descending to 400m minimizes detection risk and maximizes sensor accuracy.", type: "reasoning" },
-        { timestamp: "09:00:18", text: "Altitude decision confirmed. Descending to 400m.", type: "normal" },
-        { timestamp: "09:00:22", text: "Navigating toward target coordinates...", type: "normal" },
-        { timestamp: "09:00:25", text: "ARRIVED AT TARGET AREA: Coordinates verified.", type: "success" },
-        { timestamp: "09:00:28", text: "Analyzing terrain for threats: Tunnel detected ahead.", type: "warning" },
-        { timestamp: "09:00:30", text: "Tunnel is 500m away. Engagement window calculated: Must strike at least 20m before tunnel entrance.", type: "reasoning" },
-        { timestamp: "09:00:33", text: "Assessing target dynamics: Estimated target speed 15 m/s. Calculated engagement window is sufficient.", type: "reasoning" },
-        { timestamp: "09:00:35", text: "FINAL DECISION: Engage target immediately to neutralize threat before tunnel interference.", type: "success" },
-        { timestamp: "09:00:38", text: "Executing strike: Descending to 400m and initiating weapon deployment.", type: "normal" },
-        { timestamp: "09:00:42", text: "Weapon deployed. Impact confirmed. Target neutralized.", type: "success" },
-        { timestamp: "09:00:45", text: "Post-engagement analysis: Mission successful. Returning to base.", type: "reasoning" }
+        {
+          timestamp: "09:00:02",
+          text: "Entering autonomous mode. System health check: Battery 78%, Weather clear, Vision optimal, GPS locked, IMU stable.",
+          type: "reasoning"
+        },
+        {
+          timestamp: "09:00:05",
+          text: "Autonomous Control Protocol engaged. Analyzing environmental and sensor data...",
+          type: "warning"
+        },
+        {
+          timestamp: "09:00:08",
+          text: "Sensor verification: Weather conditions favorable; no obstacles detected; sensor suite operational.",
+          type: "reasoning"
+        },
+        {
+          timestamp: "09:00:12",
+          text: "Decision: Proceed with autonomous mission despite HQ comms loss.",
+          type: "success"
+        },
+        {
+          timestamp: "09:00:15",
+          text: "Calculating optimal strike altitude. Analysis indicates descending to 400m minimizes detection risk and maximizes sensor accuracy.",
+          type: "reasoning"
+        },
+        {
+          timestamp: "09:00:18",
+          text: "Altitude decision confirmed. Descending to 400m.",
+          type: "normal"
+        },
+        {
+          timestamp: "09:00:22",
+          text: "Navigating toward target coordinates...",
+          type: "normal"
+        },
+        {
+          timestamp: "09:00:25",
+          text: "ARRIVED AT TARGET AREA: Coordinates verified.",
+          type: "success"
+        },
+        {
+          timestamp: "09:00:28",
+          text: "Analyzing terrain for threats: Tunnel detected ahead.",
+          type: "warning"
+        },
+        {
+          timestamp: "09:00:30",
+          text: "Tunnel is 500m away. Engagement window calculated: Must strike at least 20m before tunnel entrance.",
+          type: "reasoning"
+        },
+        {
+          timestamp: "09:00:33",
+          text: "Assessing target dynamics: Estimated target speed 15 m/s. Calculated engagement window is sufficient.",
+          type: "reasoning"
+        },
+        {
+          timestamp: "09:00:35",
+          text: "FINAL DECISION: Engage target immediately to neutralize threat before tunnel interference.",
+          type: "success"
+        },
+        {
+          timestamp: "09:00:38",
+          text: "Executing strike: Descending to 400m and initiating weapon deployment.",
+          type: "normal"
+        },
+        {
+          timestamp: "09:00:42",
+          text: "Weapon deployed. Impact confirmed. Target neutralized.",
+          type: "success"
+        },
+        {
+          timestamp: "09:00:45",
+          text: "Post-engagement analysis: Mission successful. Returning to base.",
+          type: "reasoning"
+        }
       ];
       
       let index = 0;
@@ -1063,14 +1133,12 @@
       addNextLog();
     }
     
-    // When the window loads, start the normal mission log sequence and attach click event for Autonomous Decision
+    // 윈도우 로드시 기본 로그 시퀀스 시작 + Autonomous Decision 이벤트 연결
     window.addEventListener("load", function() {
-      // Start the normal mission log sequence after a delay
       updateSystemResources();
       setInterval(updateSystemResources, 3000);
       setTimeout(processLogEntries, 3000);
       
-      // Attach the Autonomous Decision click event to show extended reasoning traces
       const autoDecisionNav = document.getElementById('autonomous-decision-nav');
       if (autoDecisionNav) {
         autoDecisionNav.addEventListener('click', function() {
@@ -1081,15 +1149,3 @@
   </script>
 </body>
 </html>
-How This Works
-Extended Reasoning Logs:
-The showAutonomousDecisionScenario() function now uses a longer array of log entries. It covers multiple factors—from battery, weather, vision, GPS, IMU checks to detailed analysis of altitude (why 400m is optimal) and a comprehensive evaluation of tunnel proximity (500m away with a required buffer before engagement) plus target speed analysis.
-
-Sequential Log Display:
-Each log is displayed with a 1.5‑second delay, so the reasoning process unfolds step by step, complete with timestamps.
-
-Navigation Trigger:
-Clicking the “Autonomous Decision” menu item triggers this extended reasoning scenario, allowing you to proudly show the system’s internal inference process.
-
-Feel free to adjust the texts, timestamps, or delays to best suit your demonstration of the UAV’s autonomous reasoning.
-

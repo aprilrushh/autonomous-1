@@ -193,6 +193,21 @@
             background-color: #2980b9;
         }
         
+        .sidebar-circle {
+            height: 28px;
+            width: 28px;
+            border-radius: 50%;
+            background-color: #0a0a0a;
+            border: 1px solid #555;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+        }
+        
+        .sidebar-item.active .sidebar-circle {
+            border-color: #2980b9;
+        }
+        
         /* Terminal Body */
         .terminal-body {
             flex-grow: 1;
@@ -221,6 +236,11 @@
         .terminal-tab.active {
             background-color: #222;
             border-bottom: 2px solid #2980b9;
+            color: #e0e0e0;
+        }
+        
+        .terminal-tab {
+            color: #888;
         }
         
         .terminal-content {
@@ -391,6 +411,19 @@
             color: #2ecc71;
         }
         
+        /* Add style for mission stage text */
+        .mission-stage.reached {
+            color: #2980b9;
+        }
+        
+        .mission-stage.active {
+            color: #f39c12;
+        }
+        
+        .mission-stage.completed {
+            color: #2ecc71;
+        }
+        
         @keyframes blink {
             0%, 100% { opacity: 1; }
             50% { opacity: 0; }
@@ -498,6 +531,12 @@
             flex-direction: column;
         }
         
+        /* Dots animation for processing */
+        .dots-animation {
+            display: inline-block;
+            width: 30px;
+        }
+        
         @media (max-width: 1024px) {
             .system-info {
                 width: 180px;
@@ -516,6 +555,32 @@
             .logs-container {
                 padding-right: 150px;
             }
+        }
+        
+        /* Progress bar styles */
+        .progress-container {
+            width: 60px;
+            height: 3px;
+            background-color: #222;
+            border-radius: 2px;
+            overflow: hidden;
+        }
+        
+        .progress-bar {
+            height: 100%;
+            transition: width 0.3s;
+        }
+        
+        .progress-bar.success {
+            background-color: #2ecc71;
+        }
+        
+        .progress-bar.warning {
+            background-color: #f39c12;
+        }
+        
+        .progress-bar.error {
+            background-color: #e74c3c;
         }
     </style>
 </head>
@@ -559,21 +624,21 @@
                 <div class="status-item">
                     <div class="status-label">CPU</div>
                     <div class="status-value" id="cpu-load">42%</div>
-                    <div class="progress-container" style="width: 60px;">
+                    <div class="progress-container">
                         <div class="progress-bar success" id="cpu-bar" style="width: 42%;"></div>
                     </div>
                 </div>
                 <div class="status-item">
                     <div class="status-label">MEMORY</div>
                     <div class="status-value" id="memory-load">68%</div>
-                    <div class="progress-container" style="width: 60px;">
+                    <div class="progress-container">
                         <div class="progress-bar warning" id="memory-bar" style="width: 68%;"></div>
                     </div>
                 </div>
                 <div class="status-item">
                     <div class="status-label">NETWORK</div>
                     <div class="status-value error">OFFLINE</div>
-                    <div class="progress-container" style="width: 60px;">
+                    <div class="progress-container">
                         <div class="progress-bar error" style="width: 5%;"></div>
                     </div>
                 </div>
@@ -589,25 +654,39 @@
             <!-- Left Sidebar -->
             <div class="sidebar">
                 <div class="sidebar-item active">
-                    <i class="fas fa-terminal"></i>
+                    <div class="sidebar-circle">
+                        <i class="fas fa-terminal"></i>
+                    </div>
                 </div>
                 <div class="sidebar-item">
-                    <i class="fas fa-video"></i>
+                    <div class="sidebar-circle">
+                        <i class="fas fa-video"></i>
+                    </div>
                 </div>
                 <div class="sidebar-item">
-                    <i class="fas fa-map-marked-alt"></i>
+                    <div class="sidebar-circle">
+                        <i class="fas fa-map-marked-alt"></i>
+                    </div>
                 </div>
                 <div class="sidebar-item">
-                    <i class="fas fa-crosshairs"></i>
+                    <div class="sidebar-circle">
+                        <i class="fas fa-crosshairs"></i>
+                    </div>
                 </div>
                 <div class="sidebar-item">
-                    <i class="fas fa-chart-line"></i>
+                    <div class="sidebar-circle">
+                        <i class="fas fa-chart-line"></i>
+                    </div>
                 </div>
                 <div class="sidebar-item">
-                    <i class="fas fa-microchip"></i>
+                    <div class="sidebar-circle">
+                        <i class="fas fa-microchip"></i>
+                    </div>
                 </div>
                 <div class="sidebar-item">
-                    <i class="fas fa-history"></i>
+                    <div class="sidebar-circle">
+                        <i class="fas fa-history"></i>
+                    </div>
                 </div>
             </div>
             
@@ -783,6 +862,9 @@
 
     <script>
         document.addEventListener('DOMContentLoaded', function() {
+            // Set initial state
+            updateSystemResources();
+            setInterval(updateSystemResources, 3000); // Update system resources every 3 seconds
             const logsContainer = document.getElementById('logs-container');
             const statusMessage = document.getElementById('status-message');
             const clock = document.getElementById('clock');
@@ -818,6 +900,212 @@
                 return: document.getElementById('stage-return')
             };
             
+            // Function to add log entry
+            function addLogLine(timestamp, text, type) {
+                const logLine = document.createElement('div');
+                logLine.className = `log-line ${type}`;
+                
+                // Create the timestamp span
+                const timestampSpan = document.createElement('span');
+                timestampSpan.className = 'timestamp-log';
+                timestampSpan.textContent = `[${timestamp}] `;
+                
+                // Add the timestamp and text to the log line
+                logLine.appendChild(timestampSpan);
+                
+                // Typing effect for the text
+                const textNode = document.createTextNode("");
+                logLine.appendChild(textNode);
+                
+                // Insert the log line before the cursor
+                logsContainer.appendChild(logLine);
+                
+                // Animate typing effect
+                let i = 0;
+                const speed = 5; // typing speed (lower = faster)
+                const typeText = () => {
+                    if (i < text.length) {
+                        textNode.nodeValue += text.charAt(i);
+                        i++;
+                        setTimeout(typeText, speed);
+                    }
+                };
+                
+                // Start typing animation
+                typeText();
+                
+                // Scroll to the bottom
+                logsContainer.scrollTop = logsContainer.scrollHeight;
+                
+                // Update the clock
+                clock.textContent = timestamp;
+                
+                return logLine;
+            }
+            
+            // Function to update processing visualization
+            function updateProcessingVisualization(duration, type) {
+                let container, timeElement;
+                let progressBars = [];
+                
+                if (type === "sensor") {
+                    container = processingContainer;
+                    timeElement = processingTime;
+                    progressBars = [
+                        { element: thermalBar, maxWidth: 100 },
+                        { element: infraredBar, maxWidth: 100 },
+                        { element: terrainBar, maxWidth: 100 },
+                        { element: targetBar, maxWidth: 100 },
+                        { element: decisionBar, maxWidth: 100 }
+                    ];
+                } else if (type === "descent") {
+                    container = descentContainer;
+                    timeElement = descentTime;
+                    progressBars = [
+                        { element: altitudeBar, maxWidth: 100, decreasing: true },
+                        { element: approachBar, maxWidth: 100 },
+                        { element: windBar, maxWidth: 100 }
+                    ];
+                    
+                    // Set up altitude values
+                    const altitudes = [1000, 900, 800, 700, 600, 500, 400];
+                    let altIndex = 0;
+                    
+                    const altitudeInterval = setInterval(() => {
+                        if (altIndex < altitudes.length) {
+                            altitudeValue.textContent = `${altitudes[altIndex]} M`;
+                            altitudeText.textContent = `Altitude: ${altitudes[altIndex]}m`;
+                            altIndex++;
+                        } else {
+                            clearInterval(altitudeInterval);
+                        }
+                    }, duration * 1000 / altitudes.length);
+                }
+                
+                container.style.display = 'block';
+                
+                // Update time counter
+                let seconds = 0;
+                const timeInterval = setInterval(() => {
+                    seconds++;
+                    const displayMinutes = Math.floor(seconds / 60).toString().padStart(2, '0');
+                    const displaySeconds = (seconds % 60).toString().padStart(2, '0');
+                    timeElement.textContent = `${displayMinutes}:${displaySeconds}`;
+                }, 1000);
+                
+                // Animate progress bars
+                progressBars.forEach((bar, index) => {
+                    const delay = index * 500; // Stagger the start
+                    const step = bar.maxWidth / (duration * 10); // 10 updates per second
+                    let width = bar.decreasing ? bar.maxWidth : 0;
+                    
+                    setTimeout(() => {
+                        const barInterval = setInterval(() => {
+                            if (bar.decreasing) {
+                                width -= step;
+                                if (width <= 0) {
+                                    width = 0;
+                                    clearInterval(barInterval);
+                                }
+                            } else {
+                                width += step;
+                                if (width >= bar.maxWidth) {
+                                    width = bar.maxWidth;
+                                    clearInterval(barInterval);
+                                }
+                            }
+                            bar.element.style.width = `${width}%`;
+                        }, 100);
+                    }, delay);
+                });
+                
+                // Hide container and clear intervals after duration
+                setTimeout(() => {
+                    container.style.display = 'none';
+                    clearInterval(timeInterval);
+                }, duration * 1000);
+            }
+            
+            // Function to update mission progress
+            function updateMissionProgress(stage, complete) {
+                // Calculate progress percentage based on stages
+                const stageProgress = {
+                    init: 0,
+                    transit: 20,
+                    search: 40,
+                    target: 60,
+                    engage: 80,
+                    return: 100
+                };
+                
+                // Update mission progress bar
+                missionProgress.style.width = `${stageProgress[stage]}%`;
+                
+                // Update stage indicators
+                Object.keys(stages).forEach(key => {
+                    if (stageProgress[key] < stageProgress[stage]) {
+                        // Previous stages are completed
+                        stages[key].classList.remove('reached');
+                        stages[key].classList.remove('active');
+                        stages[key].classList.add('completed');
+                    } else if (stageProgress[key] === stageProgress[stage]) {
+                        // Current stage
+                        if (complete) {
+                            stages[key].classList.remove('active');
+                            stages[key].classList.add('completed');
+                        } else {
+                            stages[key].classList.add('active');
+                            stages[key].classList.remove('completed');
+                        }
+                    } else {
+                        // Future stages
+                        stages[key].classList.remove('reached');
+                        stages[key].classList.remove('active');
+                        stages[key].classList.remove('completed');
+                    }
+                });
+            }
+            
+            // Function to update system resource usage randomly
+            function updateSystemResources() {
+                // Generate random CPU and memory usage
+                const newCpuLoad = Math.floor(Math.random() * 30) + 30; // 30-60%
+                const newMemoryLoad = Math.floor(Math.random() * 20) + 60; // 60-80%
+                
+                // Update displayed values
+                cpuLoad.textContent = `${newCpuLoad}%`;
+                cpuBar.style.width = `${newCpuLoad}%`;
+                
+                memoryLoad.textContent = `${newMemoryLoad}%`;
+                memoryBar.style.width = `${newMemoryLoad}%`;
+            }
+            
+            // Add dots animation for processing messages
+            function addDotsAnimation(logLine, duration) {
+                const dotsSpan = document.createElement('span');
+                dotsSpan.className = 'dots-animation';
+                logLine.appendChild(dotsSpan);
+                
+                let dots = '.';
+                let count = 0;
+                
+                const interval = setInterval(() => {
+                    count++;
+                    if (count > 8) {
+                        dots = '.';
+                        count = 1;
+                    } else {
+                        dots += '.';
+                    }
+                    dotsSpan.textContent = dots;
+                }, duration * 1000 / 8);
+                
+                setTimeout(() => {
+                    clearInterval(interval);
+                    dotsSpan.remove();
+                }, duration * 1000);
+            }
+                
             // Log entries with timing, type, and content
             const logEntries = [
                 { time: 0, timestamp: "08:42:15", text: "COMMUNICATION LINK LOST WITH COMMAND CENTER", type: "error", stage: "init" },
@@ -837,4 +1125,63 @@
                 { time: 25, timestamp: "08:43:51", text: "SCANNING TERRAIN AND PROCESSING SENSOR DATA", type: "warning", stage: "search", processing: "sensor", duration: 7 },
                 { time: 32, timestamp: "08:44:01", text: "INTEGRATING MULTI-SPECTRAL IMAGERY", type: "normal", stage: "search" },
                 { time: 35, timestamp: "08:44:08", text: "TARGET IDENTIFIED - CONFIDENCE LEVEL: 98.7%", type: "success", stage: "search", complete: true },
-                { time: 37, timestamp: "08:44
+                { time: 37, timestamp: "08:44:10", text: "CALCULATING OPTIMAL STRIKE PARAMETERS", type: "success", stage: "target" },
+                { time: 39, timestamp: "08:44:12", text: "DESCENDING TO STRIKE ALTITUDE: 400M", type: "success", stage: "target" },
+                { time: 41, timestamp: "08:44:15", text: "ALTITUDE DESCENT INITIATED", type: "normal", stage: "target", processing: "descent", duration: 7 },
+                { time: 48, timestamp: "08:44:30", text: "TARGET MOTION DETECTED - RECALCULATING IMPACT POINT", type: "warning", stage: "target" },
+                { time: 50, timestamp: "08:44:31", text: "COMPENSATING FOR TARGET VELOCITY AND DIRECTION", type: "success", stage: "target", complete: true },
+                { time: 52, timestamp: "08:44:35", text: "STRIKE SEQUENCE INITIATED", type: "error", stage: "engage" },
+                { time: 54, timestamp: "08:44:38", text: "AUTONOMOUS STRIKE COUNTDOWN: T-3...", type: "error", stage: "engage" },
+                { time: 55, timestamp: "08:44:39", text: "AUTONOMOUS STRIKE COUNTDOWN: T-2...", type: "error", stage: "engage" },
+                { time: 56, timestamp: "08:44:40", text: "AUTONOMOUS STRIKE COUNTDOWN: T-1...", type: "error", stage: "engage" },
+                { time: 57, timestamp: "08:44:41", text: "WEAPON DEPLOYED", type: "error", stage: "engage", complete: true },
+                { time: 58, timestamp: "08:44:45", text: "TARGET NEUTRALIZED - CONFIRMING STRIKE EFFECTIVENESS", type: "success", stage: "return" },
+                { time: 60, timestamp: "08:44:50", text: "MISSION COMPLETE - INITIATING RETURN TO BASE PROTOCOL", type: "success", stage: "return", complete: true }
+            ];
+            
+            // Function to process log entries in sequence
+            let currentEntryIndex = 0;
+            
+            function processNextLogEntry() {
+                if (currentEntryIndex >= logEntries.length) {
+                    return; // All entries processed
+                }
+                
+                const entry = logEntries[currentEntryIndex];
+                currentEntryIndex++;
+                
+                // Add log line
+                const logLine = addLogLine(entry.timestamp, entry.text, entry.type);
+                
+                // Update mission stage if specified
+                if (entry.stage) {
+                    updateMissionProgress(entry.stage, entry.complete);
+                }
+                
+                // Handle processing animations
+                if (entry.processing) {
+                    // Add dots animation if needed
+                    if (entry.processing === "sensor" || entry.processing === "descent") {
+                        addDotsAnimation(logLine, entry.duration);
+                    }
+                    
+                    // Update processing visualization
+                    updateProcessingVisualization(entry.duration, entry.processing);
+                }
+                
+                // Update status message for critical entries
+                if (entry.type === "error" || entry.type === "success" || entry.text.includes("COUNTDOWN")) {
+                    statusMessage.textContent = entry.text;
+                }
+                
+                // Schedule next entry based on time difference
+                const nextEntry = logEntries[currentEntryIndex];
+                if (nextEntry) {
+                    const timeToNext = (nextEntry.time - entry.time) * 1000;
+                    setTimeout(processNextLogEntry, timeToNext);
+                }
+            }
+            
+            // Start processing log entries
+            setTimeout(processNextLogEntry, 1000);
+        });

@@ -1196,3 +1196,54 @@
             // Start log sequence with delay
             console.log("Interface loaded. Starting log sequence in 3 seconds...");
             setTimeout(processLogEntries, 3000);
+<!-- 헤드 섹션에 다음과 같이 메타 태그 수정 -->
+<meta name="mobile-web-app-capable" content="yes">
+
+<!-- 스크립트 부분 수정 -->
+<script>
+// 간단하게 직접 로그를 표시하는 코드로 변경
+window.onload = function() {
+  console.log("Window loaded");
+  
+  const logsContainer = document.getElementById('logs-container');
+  const debugMessage = document.getElementById('debug-message');
+  
+  // 먼저 디버그 메시지를 지우고 로그를 직접 추가하는 간단한 함수
+  function showTestLogs() {
+    if (debugMessage) {
+      debugMessage.textContent = "Loading logs...";
+    }
+    
+    // 로그 항목들을 직접 추가 (타이머나 복잡한 로직 없이)
+    const logEntryData = [
+      { timestamp: "08:42:15", text: "COMMUNICATION LINK LOST WITH COMMAND CENTER", type: "error" },
+      { timestamp: "08:42:16", text: "ATTEMPTING COMMUNICATION REESTABLISHMENT...", type: "warning" },
+      { timestamp: "08:42:32", text: "COMMUNICATION REESTABLISHMENT FAILED", type: "error" },
+      { timestamp: "08:42:33", text: "INITIATING AUTONOMOUS MISSION PROTOCOL ALPHA-7", type: "warning" }
+    ];
+    
+    // 디버그 메시지 제거
+    if (debugMessage) {
+      debugMessage.style.display = 'none';
+    }
+    
+    // 로그 항목들 추가
+    logEntryData.forEach(function(entry) {
+      const logLine = document.createElement('div');
+      logLine.className = `log-line ${entry.type}`;
+      
+      const timestampSpan = document.createElement('span');
+      timestampSpan.className = 'timestamp-log';
+      timestampSpan.textContent = `[${entry.timestamp}] `;
+      
+      logLine.appendChild(timestampSpan);
+      logLine.appendChild(document.createTextNode(entry.text));
+      
+      logsContainer.appendChild(logLine);
+    });
+  }
+  
+  // 3초 후에 로그 표시
+  setTimeout(showTestLogs, 3000);
+};
+</script>

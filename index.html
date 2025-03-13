@@ -582,6 +582,16 @@
         .progress-bar.error {
             background-color: #e74c3c;
         }
+        
+        /* Debug message */
+        .debug-message {
+            color: #2ecc71;
+            font-size: 12px;
+            margin-bottom: 10px;
+            padding: 5px;
+            background-color: rgba(0, 0, 0, 0.5);
+            border-radius: 3px;
+        }
     </style>
 </head>
 <body>
@@ -828,6 +838,11 @@
                         </div>
                     </div>
                     
+                    <!-- Debug Message -->
+                    <div class="debug-message" id="debug-message">
+                        Initializing terminal... Logs will appear in 3 seconds.
+                    </div>
+                    
                     <!-- Log Lines Container -->
                     <div class="logs-container" id="logs-container">
                         <!-- Log lines will be added here by JavaScript -->
@@ -861,10 +876,19 @@
     </div>
 
     <script>
-        document.addEventListener('DOMContentLoaded', function() {
+        // Use window.onload instead of DOMContentLoaded for better compatibility
+        window.onload = function() {
+            // Add this line at the top to check if JavaScript is executing
+            console.log("Script is running...");
+            
+            // Display debugging message
+            const debugMessage = document.getElementById('debug-message');
+            debugMessage.textContent = "JavaScript initialized. Loading terminal sequence...";
+            
             // Set initial state
             updateSystemResources();
             setInterval(updateSystemResources, 3000); // Update system resources every 3 seconds
+            
             const logsContainer = document.getElementById('logs-container');
             const statusMessage = document.getElementById('status-message');
             const clock = document.getElementById('clock');
@@ -900,8 +924,10 @@
                 return: document.getElementById('stage-return')
             };
             
-            // Function to add log entry
+            // Function to add log entry with simpler implementation
             function addLogLine(timestamp, text, type) {
+                console.log("Adding log line:", timestamp, text, type);
+                
                 const logLine = document.createElement('div');
                 logLine.className = `log-line ${type}`;
                 
@@ -910,29 +936,14 @@
                 timestampSpan.className = 'timestamp-log';
                 timestampSpan.textContent = `[${timestamp}] `;
                 
-                // Add the timestamp and text to the log line
+                // Add the timestamp to the log line
                 logLine.appendChild(timestampSpan);
                 
-                // Typing effect for the text
-                const textNode = document.createTextNode("");
-                logLine.appendChild(textNode);
+                // Add text directly (no typing animation for reliability)
+                logLine.appendChild(document.createTextNode(text));
                 
                 // Insert the log line before the cursor
                 logsContainer.appendChild(logLine);
-                
-                // Animate typing effect
-                let i = 0;
-                const speed = 5; // typing speed (lower = faster)
-                const typeText = () => {
-                    if (i < text.length) {
-                        textNode.nodeValue += text.charAt(i);
-                        i++;
-                        setTimeout(typeText, speed);
-                    }
-                };
-                
-                // Start typing animation
-                typeText();
                 
                 // Scroll to the bottom
                 logsContainer.scrollTop = logsContainer.scrollHeight;
@@ -945,6 +956,8 @@
             
             // Function to update processing visualization
             function updateProcessingVisualization(duration, type) {
+                console.log("Updating processing visualization:", type, "for", duration, "seconds");
+                
                 let container, timeElement;
                 let progressBars = [];
                 
@@ -1028,6 +1041,8 @@
             
             // Function to update mission progress
             function updateMissionProgress(stage, complete) {
+                console.log("Updating mission progress:", stage, complete ? "completed" : "in progress");
+                
                 // Calculate progress percentage based on stages
                 const stageProgress = {
                     init: 0,
@@ -1045,7 +1060,6 @@
                 Object.keys(stages).forEach(key => {
                     if (stageProgress[key] < stageProgress[stage]) {
                         // Previous stages are completed
-                        stages[key].classList.remove('reached');
                         stages[key].classList.remove('active');
                         stages[key].classList.add('completed');
                     } else if (stageProgress[key] === stageProgress[stage]) {
@@ -1059,7 +1073,6 @@
                         }
                     } else {
                         // Future stages
-                        stages[key].classList.remove('reached');
                         stages[key].classList.remove('active');
                         stages[key].classList.remove('completed');
                     }
@@ -1084,26 +1097,17 @@
             function addDotsAnimation(logLine, duration) {
                 const dotsSpan = document.createElement('span');
                 dotsSpan.className = 'dots-animation';
+                dotsSpan.textContent = '...';
                 logLine.appendChild(dotsSpan);
                 
-                let dots = '.';
-                let count = 0;
-                
-                const interval = setInterval(() => {
-                    count++;
-                    if (count > 8) {
-                        dots = '.';
-                        count = 1;
-                    } else {
-                        dots += '.';
-                    }
-                    dotsSpan.textContent = dots;
-                }, duration * 1000 / 8);
-                
+                // Fixed dots for reliability, no animation
                 setTimeout(() => {
-                    clearInterval(interval);
-                    dotsSpan.remove();
+                    if (dotsSpan.parentNode) {
+                        dotsSpan.parentNode.removeChild(dotsSpan);
+                    }
                 }, duration * 1000);
+                
+                return dotsSpan;
             }
                 
             // Log entries with timing, type, and content
@@ -1139,49 +1143,56 @@
                 { time: 60, timestamp: "08:44:50", text: "MISSION COMPLETE - INITIATING RETURN TO BASE PROTOCOL", type: "success", stage: "return", complete: true }
             ];
             
-            // Function to process log entries in sequence
-            let currentEntryIndex = 0;
-            
-            function processNextLogEntry() {
-                if (currentEntryIndex >= logEntries.length) {
-                    return; // All entries processed
-                }
+            // Function to process log entries one by one
+            function processLogEntries() {
+                // Clear debug message
+                debugMessage.style.display = 'none';
                 
-                const entry = logEntries[currentEntryIndex];
-                currentEntryIndex++;
-                
-                // Add log line
-                const logLine = addLogLine(entry.timestamp, entry.text, entry.type);
-                
-                // Update mission stage if specified
-                if (entry.stage) {
-                    updateMissionProgress(entry.stage, entry.complete);
-                }
-                
-                // Handle processing animations
-                if (entry.processing) {
-                    // Add dots animation if needed
-                    if (entry.processing === "sensor" || entry.processing === "descent") {
-                        addDotsAnimation(logLine, entry.duration);
+                // Function to process the next log entry
+                function processNextEntry(index) {
+                    if (index >= logEntries.length) {
+                        console.log("All log entries processed.");
+                        return; // All entries processed
                     }
                     
-                    // Update processing visualization
-                    updateProcessingVisualization(entry.duration, entry.processing);
+                    const entry = logEntries[index];
+                    console.log(`Processing log entry ${index}:`, entry);
+                    
+                    // Add log line
+                    const logLine = addLogLine(entry.timestamp, entry.text, entry.type);
+                    
+                    // Update mission stage if specified
+                    if (entry.stage) {
+                        updateMissionProgress(entry.stage, entry.complete);
+                    }
+                    
+                    // Handle processing animations
+                    if (entry.processing) {
+                        if (entry.processing === "sensor" || entry.processing === "descent") {
+                            addDotsAnimation(logLine, entry.duration);
+                        }
+                        updateProcessingVisualization(entry.duration, entry.processing);
+                    }
+                    
+                    // Update status message for critical entries
+                    if (entry.type === "error" || entry.type === "success" || entry.text.includes("COUNTDOWN")) {
+                        statusMessage.textContent = entry.text;
+                    }
+                    
+                    // Schedule next entry
+                    const nextIndex = index + 1;
+                    if (nextIndex < logEntries.length) {
+                        const nextEntry = logEntries[nextIndex];
+                        const timeToNext = Math.max(500, (nextEntry.time - entry.time) * 1000); // Minimum 500ms delay
+                        console.log(`Next entry will process in ${timeToNext}ms`);
+                        setTimeout(() => processNextEntry(nextIndex), timeToNext);
+                    }
                 }
                 
-                // Update status message for critical entries
-                if (entry.type === "error" || entry.type === "success" || entry.text.includes("COUNTDOWN")) {
-                    statusMessage.textContent = entry.text;
-                }
-                
-                // Schedule next entry based on time difference
-                const nextEntry = logEntries[currentEntryIndex];
-                if (nextEntry) {
-                    const timeToNext = (nextEntry.time - entry.time) * 1000;
-                    setTimeout(processNextLogEntry, timeToNext);
-                }
+                // Start processing with the first entry
+                processNextEntry(0);
             }
             
-            // Start processing log entries
-            setTimeout(processNextLogEntry, 1000);
-        });
+            // Start log sequence with delay
+            console.log("Interface loaded. Starting log sequence in 3 seconds...");
+            setTimeout(processLogEntries, 3000);

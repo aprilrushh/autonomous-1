@@ -4,7 +4,7 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>RED QUEEN UAV Command & Control System</title>
-    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.2/css/all.min.css" integrity="sha512-z3gLpd7yknf1YoNbCzqRKc4qyor8gaKU1qmn+CShxbuBusANI9QpRohGBreCFkKxLhei6S9CQXFEbbKuqLg0DA==" crossorigin="anonymous" referrerpolicy="no-referrer" />
     <style>
         * {
             margin: 0;
@@ -31,10 +31,10 @@
             border-bottom: 1px solid #333;
             display: flex;
             justify-content: space-between;
-            padding: 0 15px;
-            height: 40px;
+            padding: 0 10px;
+            height: 30px;
             align-items: center;
-            font-size: 12px;
+            font-size: 10px;
         }
         
         .nav-left, .nav-right {
@@ -43,8 +43,8 @@
         }
         
         .nav-item {
-            padding: 0 15px;
-            height: 40px;
+            padding: 0 10px;
+            height: 30px;
             display: flex;
             align-items: center;
             border-right: 1px solid #333;
@@ -62,47 +62,42 @@
         }
         
         .nav-icon {
-            margin-right: 8px;
+            margin-right: 5px;
             color: #2980b9;
         }
         
         .classified-tag {
             background-color: #e74c3c;
             color: white;
-            padding: 2px 8px;
+            padding: 1px 5px;
             border-radius: 2px;
-            font-size: 10px;
+            font-size: 8px;
             font-weight: bold;
-            margin-left: 10px;
+            margin-left: 5px;
         }
         
         /* Terminal Header */
         .terminal-header {
             background-color: #111111;
             border-bottom: 1px solid #333333;
-            padding: 10px 20px;
+            padding: 5px 10px;
             display: flex;
             justify-content: space-between;
             align-items: center;
-            height: 56px;
+            height: 40px;
         }
         
         .terminal-title {
             color: #2980b9;
             font-weight: bold;
-            font-size: 18px;
+            font-size: 14px;
             display: flex;
             align-items: center;
         }
         
-        .terminal-title img {
-            height: 30px;
-            margin-right: 15px;
-        }
-        
         .status-indicators {
             display: flex;
-            gap: 15px;
+            gap: 10px;
             align-items: center;
         }
         
@@ -110,12 +105,12 @@
             display: flex;
             flex-direction: column;
             align-items: center;
-            font-size: 11px;
+            font-size: 9px;
         }
         
         .status-label {
             color: #888;
-            margin-bottom: 4px;
+            margin-bottom: 2px;
         }
         
         .status-value {
@@ -131,22 +126,22 @@
         }
         
         .status-bar {
-            height: 4px;
+            height: 3px;
             border-radius: 2px;
-            margin-top: 3px;
+            margin-top: 2px;
         }
         
         .timestamp {
             color: #cccccc;
-            margin-right: 15px;
-            font-size: 14px;
+            margin-right: 10px;
+            font-size: 12px;
             display: flex;
             flex-direction: column;
             align-items: center;
         }
         
         .timestamp-label {
-            font-size: 10px;
+            font-size: 8px;
             color: #666;
             margin-bottom: 2px;
         }
@@ -160,21 +155,21 @@
         
         /* Sidebar */
         .sidebar {
-            width: 60px;
+            width: 40px;
             background-color: #181818;
             border-right: 1px solid #333;
             display: flex;
             flex-direction: column;
-            padding: 15px 0;
+            padding: 10px 0;
         }
         
         .sidebar-item {
-            height: 50px;
+            height: 40px;
             display: flex;
             justify-content: center;
             align-items: center;
             color: #888;
-            font-size: 20px;
+            font-size: 16px;
             cursor: pointer;
             position: relative;
             transition: color 0.2s;
@@ -192,35 +187,18 @@
             content: '';
             position: absolute;
             left: 0;
-            top: 15px;
-            height: 20px;
+            top: 12px;
+            height: 16px;
             width: 3px;
             background-color: #2980b9;
-        }
-        
-        .sidebar-item .tooltip {
-            position: absolute;
-            left: 60px;
-            background-color: #333;
-            padding: 5px 10px;
-            border-radius: 3px;
-            font-size: 12px;
-            opacity: 0;
-            pointer-events: none;
-            transition: opacity 0.2s;
-            white-space: nowrap;
-        }
-        
-        .sidebar-item:hover .tooltip {
-            opacity: 1;
         }
         
         /* Terminal Body */
         .terminal-body {
             flex-grow: 1;
             background-color: #111111;
-            padding: 20px;
-            overflow: auto;
+            padding: 10px;
+            overflow: hidden;
             position: relative;
             display: flex;
             flex-direction: column;
@@ -228,15 +206,15 @@
         
         .terminal-tabs {
             display: flex;
-            margin-bottom: 15px;
+            margin-bottom: 10px;
         }
         
         .terminal-tab {
-            padding: 8px 15px;
+            padding: 5px 10px;
             background-color: #181818;
             margin-right: 5px;
             border-radius: 3px 3px 0 0;
-            font-size: 12px;
+            font-size: 10px;
             cursor: pointer;
         }
         
@@ -250,15 +228,18 @@
             background-color: #0a0a0a;
             border: 1px solid #333;
             border-radius: 3px;
-            padding: 15px;
+            padding: 10px;
             overflow: auto;
             position: relative;
+            display: flex;
+            flex-direction: column;
+            height: calc(100% - 30px);
         }
         
         .cursor {
             display: inline-block;
             width: 8px;
-            height: 16px;
+            height: 14px;
             background-color: #33ff33;
             animation: blink 1s infinite;
             margin-left: 2px;
@@ -266,11 +247,10 @@
         }
         
         .log-line {
-            margin: 5px 0;
-            line-height: 1.5;
+            margin: 3px 0;
+            line-height: 1.3;
             white-space: pre-wrap;
-            display: none;
-            font-size: 14px;
+            font-size: 12px;
         }
         
         .timestamp-log {
@@ -292,64 +272,50 @@
         /* System Info Panel */
         .system-info {
             position: absolute;
-            top: 15px;
-            right: 15px;
+            top: 10px;
+            right: 10px;
             background-color: rgba(10, 10, 10, 0.85);
-            padding: 15px;
+            padding: 10px;
             border-radius: 5px;
             border: 1px solid #333333;
             color: #cccccc;
-            width: 280px;
-            font-size: 12px;
+            width: 220px;
+            font-size: 10px;
             backdrop-filter: blur(5px);
             box-shadow: 0 5px 15px rgba(0, 0, 0, 0.5);
+            z-index: 100;
         }
         
         .info-header {
             display: flex;
             justify-content: space-between;
             align-items: center;
-            margin-bottom: 10px;
-            padding-bottom: 5px;
+            margin-bottom: 8px;
+            padding-bottom: 4px;
             border-bottom: 1px solid #333;
         }
         
         .info-title {
             color: #2980b9;
             font-weight: bold;
-            font-size: 14px;
-        }
-        
-        .info-controls {
-            display: flex;
-            gap: 10px;
-        }
-        
-        .info-control {
-            cursor: pointer;
-            color: #666;
-            transition: color 0.2s;
-        }
-        
-        .info-control:hover {
-            color: #2980b9;
+            font-size: 12px;
         }
         
         .info-section {
-            margin-bottom: 10px;
+            margin-bottom: 8px;
         }
         
         .section-title {
             color: #888;
-            font-size: 11px;
-            margin-bottom: 5px;
+            font-size: 9px;
+            margin-bottom: 3px;
             text-transform: uppercase;
         }
         
         .info-line {
             display: flex;
             justify-content: space-between;
-            margin: 5px 0;
+            margin: 3px 0;
         }
         
         .info-label {
@@ -369,317 +335,14 @@
             color: #f39c12;
         }
         
-        .progress-container {
-            width: 100%;
-            background-color: #222222;
-            height: 6px;
-            border-radius: 3px;
-            margin: 3px 0;
-            overflow: hidden;
-        }
-        
-        .progress-bar {
-            height: 100%;
-            background-color: #2980b9;
-            width: 0;
-            border-radius: 3px;
-        }
-        
-        .progress-bar.success {
-            background-color: #2ecc71;
-        }
-        
-        .progress-bar.warning {
-            background-color: #f39c12;
-        }
-        
-        .progress-bar.error {
-            background-color: #e74c3c;
-        }
-        
-        @keyframes blink {
-            0%, 100% { opacity: 1; }
-            50% { opacity: 0; }
-        }
-        
-        .dots-animation {
-            display: inline-block;
-            width: 50px;
-        }
-        
-        /* Right Panel */
-        .right-panel {
-            width: 300px;
-            background-color: #0e0e0e;
-            border-left: 1px solid #333;
-            display: flex;
-            flex-direction: column;
-            overflow: hidden;
-        }
-        
-        .panel-section {
-            border-bottom: 1px solid #222;
-            padding: 15px;
-        }
-        
-        .panel-title {
-            color: #2980b9;
-            font-size: 14px;
-            margin-bottom: 10px;
-            display: flex;
-            justify-content: space-between;
-            align-items: center;
-        }
-        
-        .panel-controls {
-            display: flex;
-            gap: 10px;
-        }
-        
-        .panel-control {
-            color: #555;
-            cursor: pointer;
-            font-size: 12px;
-            transition: color 0.2s;
-        }
-        
-        .panel-control:hover {
-            color: #2980b9;
-        }
-        
-        .sensor-feeds {
-            display: flex;
-            flex-direction: column;
-            gap: 10px;
-        }
-        
-        .sensor-feed {
-            background-color: #151515;
-            border: 1px solid #222;
-            border-radius: 3px;
-            overflow: hidden;
-            height: 120px;
-            position: relative;
-        }
-        
-        .feed-header {
-            background-color: rgba(0, 0, 0, 0.5);
-            padding: 5px 10px;
-            font-size: 10px;
-            display: flex;
-            justify-content: space-between;
-            position: absolute;
-            top: 0;
-            left: 0;
-            right: 0;
-            z-index: 5;
-        }
-        
-        .feed-title {
-            color: #2980b9;
-        }
-        
-        .feed-status {
-            color: #2ecc71;
-        }
-        
-        .thermal-feed {
-            background: linear-gradient(135deg, #000, #300, #600, #900, #c00, #f00);
-            height: 100%;
-            opacity: 0.7;
-            display: flex;
-            justify-content: center;
-            align-items: center;
-        }
-        
-        .ir-feed {
-            background: linear-gradient(135deg, #000, #003, #006, #009, #00c, #00f);
-            height: 100%;
-            opacity: 0.7;
-            display: flex;
-            justify-content: center;
-            align-items: center;
-        }
-        
-        .radar-feed {
-            background-color: #001a00;
-            height: 100%;
-            display: flex;
-            justify-content: center;
-            align-items: center;
-            position: relative;
-            overflow: hidden;
-        }
-        
-        .radar-sweep {
-            position: absolute;
-            top: 50%;
-            left: 50%;
-            width: 120px;
-            height: 120px;
-            margin-top: -60px;
-            margin-left: -60px;
-            border-radius: 50%;
-            background: linear-gradient(90deg, rgba(0, 255, 0, 0.2), transparent 50%);
-            animation: sweep 3s linear infinite;
-        }
-        
-        .target-indicator {
-            position: absolute;
-            width: 20px;
-            height: 20px;
-            top: 30%;
-            left: 60%;
-            border: 2px solid #f00;
-            border-radius: 50%;
-            animation: pulse 2s infinite;
-        }
-        
-        @keyframes sweep {
-            from { transform: rotate(0deg); }
-            to { transform: rotate(360deg); }
-        }
-        
-        @keyframes pulse {
-            0% { transform: scale(0.8); opacity: 0.5; }
-            50% { transform: scale(1.2); opacity: 0.8; }
-            100% { transform: scale(0.8); opacity: 0.5; }
-        }
-        
-        .map-container {
-            height: 200px;
-            background-color: #112211;
-            position: relative;
-            overflow: hidden;
-        }
-        
-        .map-grid {
-            position: absolute;
-            top: 0;
-            left: 0;
-            right: 0;
-            bottom: 0;
-            background-image: linear-gradient(to right, rgba(0, 255, 0, 0.1) 1px, transparent 1px),
-                             linear-gradient(to bottom, rgba(0, 255, 0, 0.1) 1px, transparent 1px);
-            background-size: 20px 20px;
-        }
-        
-        .uav-position {
-            position: absolute;
-            top: 40%;
-            left: 30%;
-            width: 12px;
-            height: 12px;
-            background-color: #2980b9;
-            border-radius: 50%;
-            border: 2px solid #fff;
-            transform: translate(-50%, -50%);
-            z-index: 2;
-        }
-        
-        .target-position {
-            position: absolute;
-            top: 60%;
-            left: 70%;
-            width: 12px;
-            height: 12px;
-            background-color: #e74c3c;
-            border-radius: 50%;
-            transform: translate(-50%, -50%);
-            animation: pulse 2s infinite;
-            z-index: 2;
-        }
-        
-        .mission-path {
-            position: absolute;
-            top: 0;
-            left: 0;
-            right: 0;
-            bottom: 0;
-            stroke: #2980b9;
-            stroke-width: 2;
-            stroke-dasharray: 5, 5;
-            fill: none;
-            z-index: 1;
-        }
-        
-        /* Footer */
-        .footer {
-            background-color: #111111;
-            border-top: 1px solid #333333;
-            padding: 0 20px;
-            height: 36px;
-            color: #f39c12;
-            display: flex;
-            justify-content: space-between;
-            align-items: center;
-            font-size: 12px;
-        }
-        
-        .footer-left, .footer-right {
-            display: flex;
-            align-items: center;
-            gap: 20px;
-        }
-        
-        .footer-item {
-            display: flex;
-            align-items: center;
-        }
-        
-        .footer-icon {
-            margin-right: 8px;
-            color: #2980b9;
-        }
-        
-        .footer-status {
-            color: #2ecc71;
-        }
-        
-        .footer-status.warning {
-            color: #f39c12;
-        }
-        
-        .footer-status.error {
-            color: #e74c3c;
-        }
-        
-        /* Tooltip styles */
-        .tooltip {
-            position: relative;
-            display: inline-block;
-        }
-        
-        .tooltip .tooltiptext {
-            visibility: hidden;
-            width: 120px;
-            background-color: #2c3e50;
-            color: #fff;
-            text-align: center;
-            border-radius: 6px;
-            padding: 5px;
-            position: absolute;
-            z-index: 1;
-            bottom: 125%;
-            left: 50%;
-            margin-left: -60px;
-            opacity: 0;
-            transition: opacity 0.3s;
-            font-size: 12px;
-        }
-        
-        .tooltip:hover .tooltiptext {
-            visibility: visible;
-            opacity: 1;
-        }
-        
         /* Mission Progress Bar */
         .mission-progress-container {
             width: 100%;
             background-color: #181818;
             border-radius: 3px;
-            height: 8px;
-            margin-top: 15px;
+            height: 6px;
+            margin-top: 10px;
+            margin-bottom: 2px;
             overflow: hidden;
             position: relative;
         }
@@ -694,8 +357,8 @@
         .mission-progress-stages {
             display: flex;
             justify-content: space-between;
-            margin-top: 5px;
-            font-size: 10px;
+            margin-bottom: 10px;
+            font-size: 8px;
             color: #666;
         }
         
@@ -708,11 +371,11 @@
         .mission-stage:before {
             content: '•';
             position: absolute;
-            top: -15px;
+            top: -12px;
             left: 50%;
             transform: translateX(-50%);
             color: #444;
-            font-size: 20px;
+            font-size: 16px;
         }
         
         .mission-stage.reached:before {
@@ -728,20 +391,31 @@
             color: #2ecc71;
         }
         
+        @keyframes blink {
+            0%, 100% { opacity: 1; }
+            50% { opacity: 0; }
+        }
+        
+        @keyframes pulse {
+            0% { transform: translateX(-50%) scale(0.8); opacity: 0.5; }
+            50% { transform: translateX(-50%) scale(1.2); opacity: 0.8; }
+            100% { transform: translateX(-50%) scale(0.8); opacity: 0.5; }
+        }
+        
         /* Processing Visualization */
         .processing-container {
             border: 1px solid #333;
             border-radius: 3px;
-            padding: 10px;
-            margin: 10px 0;
+            padding: 8px;
+            margin: 8px 0;
             background-color: rgba(0, 0, 0, 0.3);
             display: none;
         }
         
         .processing-header {
-            font-size: 12px;
+            font-size: 10px;
             color: #2980b9;
-            margin-bottom: 8px;
+            margin-bottom: 6px;
             display: flex;
             justify-content: space-between;
         }
@@ -753,21 +427,21 @@
         .processing-bars {
             display: flex;
             flex-direction: column;
-            gap: 8px;
+            gap: 6px;
         }
         
         .processing-item {
-            font-size: 10px;
+            font-size: 9px;
             color: #aaa;
         }
         
         .processing-progress {
-            height: 4px;
+            height: 3px;
             width: 100%;
             background-color: #222;
             border-radius: 2px;
             overflow: hidden;
-            margin-top: 3px;
+            margin-top: 2px;
         }
         
         .processing-bar {
@@ -776,220 +450,391 @@
             background-color: #2980b9;
             transition: width 0.1s linear;
         }
+        
+        /* Logs container */
+        .logs-container {
+            flex-grow: 1;
+            overflow-y: auto;
+            padding-right: 220px; /* Space for system info panel */
+        }
+        
+        /* Footer */
+        .footer {
+            background-color: #111111;
+            border-top: 1px solid #333333;
+            padding: 0 10px;
+            height: 28px;
+            color: #f39c12;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            font-size: 10px;
+        }
+        
+        .footer-left, .footer-right {
+            display: flex;
+            align-items: center;
+            gap: 10px;
+        }
+        
+        .footer-item {
+            display: flex;
+            align-items: center;
+        }
+        
+        .footer-icon {
+            margin-right: 5px;
+            color: #2980b9;
+        }
+        
+        /* For tablet aspect ratio optimization */
+        .interface-container {
+            width: 100%;
+            height: 100vh;
+            max-width: 1200px;
+            margin: 0 auto;
+            aspect-ratio: 16 / 10; /* Galaxy Tab S8 aspect ratio approximation */
+            display: flex;
+            flex-direction: column;
+        }
+        
+        @media (max-width: 1024px) {
+            .system-info {
+                width: 180px;
+                font-size: 9px;
+            }
+            .logs-container {
+                padding-right: 180px;
+            }
+        }
+        
+        @media (max-width: 768px) {
+            .system-info {
+                width: 150px;
+                font-size: 8px;
+            }
+            .logs-container {
+                padding-right: 150px;
+            }
+        }
     </style>
 </head>
 <body>
-    <!-- Top Navigation -->
-    <div class="top-nav">
-        <div class="nav-left">
-            <div class="nav-item active">
-                <i class="fas fa-fighter-jet nav-icon"></i>UAV Operations
-            </div>
-            <div class="nav-item">
-                <i class="fas fa-satellite nav-icon"></i>Satellite Feed
-            </div>
-            <div class="nav-item">
-                <i class="fas fa-map-marked-alt nav-icon"></i>Mission Planning
-            </div>
-            <div class="nav-item">
-                <i class="fas fa-chart-line nav-icon"></i>Analytics
-            </div>
-        </div>
-        <div class="nav-right">
-            <div class="nav-item">
-                <i class="fas fa-cog nav-icon"></i>Settings
-            </div>
-            <div class="nav-item">
-                <i class="fas fa-user-shield nav-icon"></i>Admin
-                <span class="classified-tag">TOP SECRET</span>
-            </div>
-        </div>
-    </div>
-    
-    <!-- Terminal Header -->
-    <div class="terminal-header">
-        <div class="terminal-title">
-            <i class="fas fa-shield-alt" style="font-size: 24px; margin-right: 15px; color: #2980b9;"></i>
-            RED QUEEN UAV AUTONOMOUS DECISION SYSTEM
-            <span class="classified-tag" style="margin-left: 15px;">CLASSIFIED</span>
-        </div>
-        <div class="status-indicators">
-            <div class="status-item">
-                <div class="status-label">CPU LOAD</div>
-                <div class="status-value" id="cpu-load">42%</div>
-                <div class="progress-container" style="width: 80px;">
-                    <div class="progress-bar success" id="cpu-bar" style="width: 42%;"></div>
+    <div class="interface-container">
+        <!-- Top Navigation -->
+        <div class="top-nav">
+            <div class="nav-left">
+                <div class="nav-item active">
+                    <i class="fas fa-fighter-jet nav-icon"></i>UAV Operations
+                </div>
+                <div class="nav-item">
+                    <i class="fas fa-satellite nav-icon"></i>Satellite
+                </div>
+                <div class="nav-item">
+                    <i class="fas fa-map-marked-alt nav-icon"></i>Mission Planning
+                </div>
+                <div class="nav-item">
+                    <i class="fas fa-chart-line nav-icon"></i>Analytics
                 </div>
             </div>
-            <div class="status-item">
-                <div class="status-label">MEMORY</div>
-                <div class="status-value" id="memory-load">68%</div>
-                <div class="progress-container" style="width: 80px;">
-                    <div class="progress-bar warning" id="memory-bar" style="width: 68%;"></div>
+            <div class="nav-right">
+                <div class="nav-item">
+                    <i class="fas fa-cog nav-icon"></i>Settings
                 </div>
-            </div>
-            <div class="status-item">
-                <div class="status-label">NETWORK</div>
-                <div class="status-value error">OFFLINE</div>
-                <div class="progress-container" style="width: 80px;">
-                    <div class="progress-bar error" style="width: 5%;"></div>
+                <div class="nav-item">
+                    <i class="fas fa-user-shield nav-icon"></i>Admin
+                    <span class="classified-tag">TOP SECRET</span>
                 </div>
-            </div>
-            <div class="timestamp">
-                <div class="timestamp-label">MISSION TIME</div>
-                <div id="clock">08:42:15</div>
-            </div>
-        </div>
-    </div>
-    
-    <!-- Main Container -->
-    <div class="main-container">
-        <!-- Left Sidebar -->
-        <div class="sidebar">
-            <div class="sidebar-item active">
-                <i class="fas fa-terminal"></i>
-                <div class="tooltip">Terminal</div>
-            </div>
-            <div class="sidebar-item">
-                <i class="fas fa-video"></i>
-                <div class="tooltip">Video Feed</div>
-            </div>
-            <div class="sidebar-item">
-                <i class="fas fa-map-marked-alt"></i>
-                <div class="tooltip">Navigation</div>
-            </div>
-            <div class="sidebar-item">
-                <i class="fas fa-crosshairs"></i>
-                <div class="tooltip">Targeting</div>
-            </div>
-            <div class="sidebar-item">
-                <i class="fas fa-chart-line"></i>
-                <div class="tooltip">Telemetry</div>
-            </div>
-            <div class="sidebar-item">
-                <i class="fas fa-microchip"></i>
-                <div class="tooltip">System</div>
-            </div>
-            <div class="sidebar-item">
-                <i class="fas fa-history"></i>
-                <div class="tooltip">Mission History</div>
             </div>
         </div>
         
-        <!-- Terminal Body -->
-        <div class="terminal-body">
-            <div class="terminal-tabs">
-                <div class="terminal-tab active">Mission Log</div>
-                <div class="terminal-tab">System Events</div>
-                <div class="terminal-tab">Autonomous Decisions</div>
-                <div class="terminal-tab">Edge AI Training</div>
+        <!-- Terminal Header -->
+        <div class="terminal-header">
+            <div class="terminal-title">
+                <i class="fas fa-shield-alt" style="font-size: 16px; margin-right: 10px; color: #2980b9;"></i>
+                RED QUEEN UAV AUTONOMOUS DECISION SYSTEM
+                <span class="classified-tag" style="margin-left: 10px;">CLASSIFIED</span>
             </div>
-            
-            <!-- Mission Progress Bar -->
-            <div class="mission-progress-container">
-                <div class="mission-progress-bar" id="mission-progress"></div>
-            </div>
-            <div class="mission-progress-stages">
-                <div class="mission-stage" id="stage-init">Initialize</div>
-                <div class="mission-stage" id="stage-transit">Transit</div>
-                <div class="mission-stage" id="stage-search">Search</div>
-                <div class="mission-stage" id="stage-target">Target</div>
-                <div class="mission-stage" id="stage-engage">Engage</div>
-                <div class="mission-stage" id="stage-return">Return</div>
-            </div>
-            
-            <div class="terminal-content" id="terminal">
-                <!-- Processing Visualization Container -->
-                <div class="processing-container" id="processing-container">
-                    <div class="processing-header">
-                        <div class="processing-title">PROCESSING SENSOR DATA</div>
-                        <div class="processing-time" id="processing-time">00:00</div>
-                    </div>
-                    <div class="processing-bars">
-                        <div class="processing-item">
-                            Thermal Imaging Analysis
-                            <div class="processing-progress">
-                                <div class="processing-bar" id="thermal-bar"></div>
-                            </div>
-                        </div>
-                        <div class="processing-item">
-                            Infrared Data Integration
-                            <div class="processing-progress">
-                                <div class="processing-bar" id="infrared-bar"></div>
-                            </div>
-                        </div>
-                        <div class="processing-item">
-                            Terrain Mapping
-                            <div class="processing-progress">
-                                <div class="processing-bar" id="terrain-bar"></div>
-                            </div>
-                        </div>
-                        <div class="processing-item">
-                            Target Recognition
-                            <div class="processing-progress">
-                                <div class="processing-bar" id="target-bar"></div>
-                            </div>
-                        </div>
-                        <div class="processing-item">
-                            Decision Matrix Calculation
-                            <div class="processing-progress">
-                                <div class="processing-bar" id="decision-bar"></div>
-                            </div>
-                        </div>
+            <div class="status-indicators">
+                <div class="status-item">
+                    <div class="status-label">CPU</div>
+                    <div class="status-value" id="cpu-load">42%</div>
+                    <div class="progress-container" style="width: 60px;">
+                        <div class="progress-bar success" id="cpu-bar" style="width: 42%;"></div>
                     </div>
                 </div>
-                
-                <!-- Descent Visualization Container -->
-                <div class="processing-container" id="descent-container">
-                    <div class="processing-header">
-                        <div class="processing-title">ALTITUDE DESCENT IN PROGRESS</div>
-                        <div class="processing-time" id="descent-time">00:00</div>
-                    </div>
-                    <div class="processing-bars">
-                        <div class="processing-item">
-                            <span id="altitude-text">Altitude: 1000m</span>
-                            <div class="processing-progress">
-                                <div class="processing-bar" id="altitude-bar" style="width: 100%;"></div>
-                            </div>
-                        </div>
-                        <div class="processing-item">
-                            Approach Vector Optimization
-                            <div class="processing-progress">
-                                <div class="processing-bar" id="approach-bar"></div>
-                            </div>
-                        </div>
-                        <div class="processing-item">
-                            Wind Compensation
-                            <div class="processing-progress">
-                                <div class="processing-bar" id="wind-bar"></div>
-                            </div>
-                        </div>
+                <div class="status-item">
+                    <div class="status-label">MEMORY</div>
+                    <div class="status-value" id="memory-load">68%</div>
+                    <div class="progress-container" style="width: 60px;">
+                        <div class="progress-bar warning" id="memory-bar" style="width: 68%;"></div>
                     </div>
                 </div>
+                <div class="status-item">
+                    <div class="status-label">NETWORK</div>
+                    <div class="status-value error">OFFLINE</div>
+                    <div class="progress-container" style="width: 60px;">
+                        <div class="progress-bar error" style="width: 5%;"></div>
+                    </div>
+                </div>
+                <div class="timestamp">
+                    <div class="timestamp-label">MISSION TIME</div>
+                    <div id="clock">08:42:15</div>
+                </div>
+            </div>
+        </div>
+        
+        <!-- Main Container -->
+        <div class="main-container">
+            <!-- Left Sidebar -->
+            <div class="sidebar">
+                <div class="sidebar-item active">
+                    <i class="fas fa-terminal"></i>
+                </div>
+                <div class="sidebar-item">
+                    <i class="fas fa-video"></i>
+                </div>
+                <div class="sidebar-item">
+                    <i class="fas fa-map-marked-alt"></i>
+                </div>
+                <div class="sidebar-item">
+                    <i class="fas fa-crosshairs"></i>
+                </div>
+                <div class="sidebar-item">
+                    <i class="fas fa-chart-line"></i>
+                </div>
+                <div class="sidebar-item">
+                    <i class="fas fa-microchip"></i>
+                </div>
+                <div class="sidebar-item">
+                    <i class="fas fa-history"></i>
+                </div>
+            </div>
+            
+            <!-- Terminal Body -->
+            <div class="terminal-body">
+                <div class="terminal-tabs">
+                    <div class="terminal-tab active">Mission Log</div>
+                    <div class="terminal-tab">System Events</div>
+                    <div class="terminal-tab">Autonomous Decisions</div>
+                    <div class="terminal-tab">Edge AI Training</div>
+                </div>
                 
-                <!-- System Info Panel -->
-                <div class="system-info">
-                    <div class="info-header">
-                        <div class="info-title">SYSTEM STATUS</div>
-                        <div class="info-controls">
-                            <div class="info-control"><i class="fas fa-sync-alt"></i></div>
-                            <div class="info-control"><i class="fas fa-expand"></i></div>
+                <!-- Mission Progress Bar -->
+                <div class="mission-progress-container">
+                    <div class="mission-progress-bar" id="mission-progress"></div>
+                </div>
+                <div class="mission-progress-stages">
+                    <div class="mission-stage" id="stage-init">Initialize</div>
+                    <div class="mission-stage" id="stage-transit">Transit</div>
+                    <div class="mission-stage" id="stage-search">Search</div>
+                    <div class="mission-stage" id="stage-target">Target</div>
+                    <div class="mission-stage" id="stage-engage">Engage</div>
+                    <div class="mission-stage" id="stage-return">Return</div>
+                </div>
+                
+                <div class="terminal-content">
+                    <!-- System Info Panel -->
+                    <div class="system-info">
+                        <div class="info-header">
+                            <div class="info-title">SYSTEM STATUS</div>
+                        </div>
+                        
+                        <div class="info-section">
+                            <div class="section-title">Primary Systems</div>
+                            <div class="info-line">
+                                <span class="info-label">ENGINE:</span>
+                                <span class="info-value">OPERATIONAL</span>
+                            </div>
+                            <div class="info-line">
+                                <span class="info-label">FUEL:</span>
+                                <span class="info-value">87% <i class="fas fa-gas-pump" style="font-size: 8px;"></i></span>
+                            </div>
+                            <div class="info-line">
+                                <span class="info-label">GPS:</span>
+                                <span class="info-value">SIGNAL LOCKED</span>
+                            </div>
+                            <div class="info-line">
+                                <span class="info-label">ALTITUDE:</span>
+                                <span class="info-value" id="altitude-value">1023 M</span>
+                            </div>
+                        </div>
+                        
+                        <div class="info-section">
+                            <div class="section-title">Mission Parameters</div>
+                            <div class="info-line">
+                                <span class="info-label">WEAPONS:</span>
+                                <span class="info-value">ARMED</span>
+                            </div>
+                            <div class="info-line">
+                                <span class="info-label">COMMS:</span>
+                                <span class="status-error">DISCONNECTED</span>
+                            </div>
+                            <div class="info-line">
+                                <span class="info-label">AI MODE:</span>
+                                <span class="status-warning">AUTONOMOUS</span>
+                            </div>
+                            <div class="info-line">
+                                <span class="info-label">MISSION:</span>
+                                <span class="status-warning">EXECUTING</span>
+                            </div>
                         </div>
                     </div>
                     
-                    <div class="info-section">
-                        <div class="section-title">Primary Systems</div>
-                        <div class="info-line">
-                            <span class="info-label">ENGINE:</span>
-                            <span class="info-value">OPERATIONAL</span>
+                    <!-- Processing Visual for Sensor Data -->
+                    <div class="processing-container" id="processing-container">
+                        <div class="processing-header">
+                            <div class="processing-title">PROCESSING SENSOR DATA</div>
+                            <div class="processing-time" id="processing-time">00:00</div>
                         </div>
-                        <div class="info-line">
-                            <span class="info-label">FUEL:</span>
-                            <span class="info-value">87% <i class="fas fa-gas-pump" style="font-size: 10px;"></i></span>
+                        <div class="processing-bars">
+                            <div class="processing-item">
+                                Thermal Imaging Analysis
+                                <div class="processing-progress">
+                                    <div class="processing-bar" id="thermal-bar"></div>
+                                </div>
+                            </div>
+                            <div class="processing-item">
+                                Infrared Data Integration
+                                <div class="processing-progress">
+                                    <div class="processing-bar" id="infrared-bar"></div>
+                                </div>
+                            </div>
+                            <div class="processing-item">
+                                Terrain Mapping
+                                <div class="processing-progress">
+                                    <div class="processing-bar" id="terrain-bar"></div>
+                                </div>
+                            </div>
+                            <div class="processing-item">
+                                Target Recognition
+                                <div class="processing-progress">
+                                    <div class="processing-bar" id="target-bar"></div>
+                                </div>
+                            </div>
+                            <div class="processing-item">
+                                Decision Matrix Calculation
+                                <div class="processing-progress">
+                                    <div class="processing-bar" id="decision-bar"></div>
+                                </div>
+                            </div>
                         </div>
-                        <div class="info-line">
-                            <span class="info-label">GPS:</span>
-                            <span class="info-value">SIGNAL LOCKED</span>
+                    </div>
+                    
+                    <!-- Descent Visualization -->
+                    <div class="processing-container" id="descent-container">
+                        <div class="processing-header">
+                            <div class="processing-title">ALTITUDE DESCENT IN PROGRESS</div>
+                            <div class="processing-time" id="descent-time">00:00</div>
                         </div>
-                        <div class="info-line">
-                            <span class="info-label">
+                        <div class="processing-bars">
+                            <div class="processing-item">
+                                <span id="altitude-text">Altitude: 1000m</span>
+                                <div class="processing-progress">
+                                    <div class="processing-bar" id="altitude-bar" style="width: 100%;"></div>
+                                </div>
+                            </div>
+                            <div class="processing-item">
+                                Approach Vector Optimization
+                                <div class="processing-progress">
+                                    <div class="processing-bar" id="approach-bar"></div>
+                                </div>
+                            </div>
+                            <div class="processing-item">
+                                Wind Compensation
+                                <div class="processing-progress">
+                                    <div class="processing-bar" id="wind-bar"></div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                    
+                    <!-- Log Lines Container -->
+                    <div class="logs-container" id="logs-container">
+                        <!-- Log lines will be added here by JavaScript -->
+                    </div>
+                    
+                    <!-- Cursor -->
+                    <span class="cursor"></span>
+                </div>
+            </div>
+        </div>
+        
+        <!-- Footer -->
+        <div class="footer">
+            <div class="footer-left">
+                <div class="footer-item">
+                    <i class="fas fa-circle footer-icon error"></i>
+                    <div id="status-message">SYSTEM STATUS: AUTONOMOUS MISSION EXECUTION</div>
+                </div>
+            </div>
+            <div class="footer-right">
+                <div class="footer-item">
+                    <i class="fas fa-shield-alt footer-icon"></i>
+                    <div>SECURITY: <span class="footer-status">OPTIMAL</span></div>
+                </div>
+                <div class="footer-item">
+                    <i class="fas fa-file-contract footer-icon"></i>
+                    <div>MISSION LOG #738-24A</div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <script>
+        document.addEventListener('DOMContentLoaded', function() {
+            const logsContainer = document.getElementById('logs-container');
+            const statusMessage = document.getElementById('status-message');
+            const clock = document.getElementById('clock');
+            const altitudeValue = document.getElementById('altitude-value');
+            const altitudeText = document.getElementById('altitude-text');
+            const missionProgress = document.getElementById('mission-progress');
+            const processingContainer = document.getElementById('processing-container');
+            const descentContainer = document.getElementById('descent-container');
+            const processingTime = document.getElementById('processing-time');
+            const descentTime = document.getElementById('descent-time');
+            const cpuLoad = document.getElementById('cpu-load');
+            const cpuBar = document.getElementById('cpu-bar');
+            const memoryLoad = document.getElementById('memory-load');
+            const memoryBar = document.getElementById('memory-bar');
+            
+            // Progress bars for processing visualization
+            const thermalBar = document.getElementById('thermal-bar');
+            const infraredBar = document.getElementById('infrared-bar');
+            const terrainBar = document.getElementById('terrain-bar');
+            const targetBar = document.getElementById('target-bar');
+            const decisionBar = document.getElementById('decision-bar');
+            const altitudeBar = document.getElementById('altitude-bar');
+            const approachBar = document.getElementById('approach-bar');
+            const windBar = document.getElementById('wind-bar');
+            
+            // Mission stages
+            const stages = {
+                init: document.getElementById('stage-init'),
+                transit: document.getElementById('stage-transit'),
+                search: document.getElementById('stage-search'),
+                target: document.getElementById('stage-target'),
+                engage: document.getElementById('stage-engage'),
+                return: document.getElementById('stage-return')
+            };
+            
+            // Log entries with timing, type, and content
+            const logEntries = [
+                { time: 0, timestamp: "08:42:15", text: "COMMUNICATION LINK LOST WITH COMMAND CENTER", type: "error", stage: "init" },
+                { time: 2, timestamp: "08:42:16", text: "ATTEMPTING COMMUNICATION REESTABLISHMENT...", type: "warning", stage: "init" },
+                { time: 5, timestamp: "08:42:32", text: "COMMUNICATION REESTABLISHMENT FAILED", type: "error", stage: "init" },
+                { time: 7, timestamp: "08:42:33", text: "INITIATING AUTONOMOUS MISSION PROTOCOL ALPHA-7", type: "warning", stage: "init" },
+                { time: 9, timestamp: "08:42:34", text: "CRITICAL SYSTEMS CHECK INITIATED", type: "normal", stage: "init" },
+                { time: 10, timestamp: "08:42:35", text: "CHECKING ENGINE SYSTEMS...", type: "normal", stage: "init" },
+                { time: 11, timestamp: "08:42:36", text: "CHECKING FUEL SYSTEMS...", type: "normal", stage: "init" },
+                { time: 12, timestamp: "08:42:37", text: "CHECKING NAVIGATION SYSTEMS...", type: "normal", stage: "init" },
+                { time: 13, timestamp: "08:42:38", text: "CHECKING WEAPON SYSTEMS...", type: "normal", stage: "init" },
+                { time: 14, timestamp: "08:42:40", text: "ALL CRITICAL SYSTEMS OPERATIONAL", type: "success", stage: "init", complete: true },
+                { time: 16, timestamp: "08:42:42", text: "PROCEEDING TO TARGET COORDINATES: 34.1066° N, 118.3445° W", type: "normal", stage: "transit" },
+                { time: 19, timestamp: "08:43:45", text: "ARRIVED AT TARGET ZONE - ALTITUDE 1000M", type: "success", stage: "transit", complete: true },
+                { time: 21, timestamp: "08:43:47", text: "INITIATING TARGET ACQUISITION PROTOCOL", type: "normal", stage: "search" },
+                { time: 23, timestamp: "08:43:50", text: "TARGET SEARCH ALGORITHM ACTIVATED", type: "warning", stage: "search" },
+                { time: 25, timestamp: "08:43:51", text: "SCANNING TERRAIN AND PROCESSING SENSOR DATA", type: "warning", stage: "search", processing: "sensor", duration: 7 },
+                { time: 32, timestamp: "08:44:01", text: "INTEGRATING MULTI-SPECTRAL IMAGERY", type: "normal", stage: "search" },
+                { time: 35, timestamp: "08:44:08", text: "TARGET IDENTIFIED - CONFIDENCE LEVEL: 98.7%", type: "success", stage: "search", complete: true },
+                { time: 37, timestamp: "08:44

@@ -1242,8 +1242,34 @@ window.onload = function() {
       logsContainer.appendChild(logLine);
     });
   }
+  <!-- 기존 스크립트가 끝난 후 -->
+</script>
+
+<!-- 완전히 새로운 스크립트 태그로 시작 -->
+<script>
+// 간단한 테스트 코드
+document.addEventListener('DOMContentLoaded', function() {
+  console.log("Testing direct log display");
   
-  // 3초 후에 로그 표시
+  // 3초 후 실행
+  setTimeout(function() {
+    // 로그 컨테이너 찾기
+    const logsContainer = document.getElementById('logs-container');
+    if (!logsContainer) {
+      console.error("로그 컨테이너를 찾을 수 없습니다");
+      return;
+    }
+    
+    // 테스트 로그 추가
+    const testLog = document.createElement('div');
+    testLog.className = 'log-line error';
+    testLog.innerHTML = '<span class="timestamp-log">[08:42:15]</span> 테스트 로그 항목';
+    logsContainer.appendChild(testLog);
+    
+    console.log("테스트 로그 항목이 추가되었습니다");
+  }, 3000);
+});
+</script>  // 3초 후에 로그 표시
   setTimeout(showTestLogs, 3000);
 };
 </script>

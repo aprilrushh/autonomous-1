@@ -183,12 +183,15 @@
     /* Terminal Body */
     .terminal-body {
       flex-grow: 1;
-      background-color: #111111;
+      background-color: #0a0a0a;
+      border: 1px solid #333;
+      border-radius: 3px;
       padding: 10px;
-      overflow: hidden;
+      overflow: auto;
       position: relative;
       display: flex;
       flex-direction: column;
+      height: calc(100% - 30px);
     }
     .terminal-tabs {
       display: flex;
@@ -508,7 +511,7 @@
         <div class="nav-item">
           <i class="fas fa-chart-line nav-icon"></i>Analytics
         </div>
-        <!-- New Autonomous Decision menu item -->
+        <!-- Autonomous Decision Menu -->
         <div class="nav-item" id="autonomous-decision-nav">
           <i class="fas fa-robot nav-icon"></i>Autonomous Decision
         </div>
@@ -798,7 +801,7 @@
       const logsContainer = document.getElementById('logs-container');
       const clock = document.getElementById('clock');
       const logLine = document.createElement('div');
-      logLine.className = `log-line ${type}`;  // "reasoning" type gets special styling
+      logLine.className = `log-line ${type}`;
       
       const timestampSpan = document.createElement('span');
       timestampSpan.className = 'timestamp-log';
@@ -1014,7 +1017,8 @@
     }
     
     // Autonomous Decision Scenario:
-    // Displays a series of logs with reasoning traces (internal concerns) along with timestamps.
+    // Extended reasoning scenario including multiple factors such as battery, weather, vision, GPS, IMU,
+    // optimal altitude calculation, tunnel detection, engagement window, and target speed analysis.
     function showAutonomousDecisionScenario() {
       const logsContainer = document.getElementById('logs-container');
       const debugMessage = document.getElementById('debug-message');
@@ -1024,26 +1028,24 @@
       logsContainer.innerHTML = '';
       if (debugMessage) debugMessage.style.display = 'none';
       
-      // Define the scenario logs with reasoning traces
+      // Extended reasoning scenario logs
       const scenarioLogs = [
-        // Communication lost with battery check
         { timestamp: "09:00:00", text: "COMMUNICATION LINK LOST WITH COMMAND CENTER", type: "error" },
-        { timestamp: "09:00:01", text: "HQ link is offline. Checking onboard power reserves... Battery at 78%—enough to continue autonomous mission.", type: "reasoning" },
-        
-        // Reached target area and calculating approach vector
-        { timestamp: "09:00:05", text: "ARRIVED AT TARGET COORDINATES: 34.1066° N, 118.3445° W", type: "success" },
-        { timestamp: "09:00:06", text: "Calculating approach vector and local conditions for optimal strike window.", type: "reasoning" },
-        
-        // Tunnel detected and decision to strike
-        { timestamp: "09:02:00", text: "TUNNEL DETECTED ON TARGET PATH", type: "warning" },
-        { timestamp: "09:02:01", text: "Evaluating whether to engage target immediately or after entry. Balancing line-of-sight and potential collateral.", type: "reasoning" },
-        { timestamp: "09:02:10", text: "FINAL DECISION: ENGAGE TARGET", type: "success" },
-        { timestamp: "09:02:11", text: "Justification: Target classified as hostile. Minimal collateral risk. Engaging now.", type: "reasoning" },
-        
-        // Strike sequence
-        { timestamp: "09:02:20", text: "DESCENDING TO STRIKE ALTITUDE: 400M", type: "normal" },
-        { timestamp: "09:02:25", text: "TARGET NEUTRALIZED. MISSION SUCCESSFUL.", type: "success" },
-        { timestamp: "09:02:26", text: "Post-Analysis: Threat eliminated. Returning to base.", type: "reasoning" }
+        { timestamp: "09:00:02", text: "Entering autonomous mode. System health check: Battery 78%, Weather clear, Vision optimal, GPS locked, IMU stable.", type: "reasoning" },
+        { timestamp: "09:00:05", text: "Autonomous Control Protocol engaged. Analyzing environmental and sensor data...", type: "warning" },
+        { timestamp: "09:00:08", text: "Sensor verification: Weather conditions favorable; no obstacles detected; sensor suite operational.", type: "reasoning" },
+        { timestamp: "09:00:12", text: "Decision: Proceed with autonomous mission despite HQ comms loss.", type: "success" },
+        { timestamp: "09:00:15", text: "Calculating optimal strike altitude. Analysis indicates descending to 400m minimizes detection risk and maximizes sensor accuracy.", type: "reasoning" },
+        { timestamp: "09:00:18", text: "Altitude decision confirmed. Descending to 400m.", type: "normal" },
+        { timestamp: "09:00:22", text: "Navigating toward target coordinates...", type: "normal" },
+        { timestamp: "09:00:25", text: "ARRIVED AT TARGET AREA: Coordinates verified.", type: "success" },
+        { timestamp: "09:00:28", text: "Analyzing terrain for threats: Tunnel detected ahead.", type: "warning" },
+        { timestamp: "09:00:30", text: "Tunnel is 500m away. Engagement window calculated: Must strike at least 20m before tunnel entrance.", type: "reasoning" },
+        { timestamp: "09:00:33", text: "Assessing target dynamics: Estimated target speed 15 m/s. Calculated engagement window is sufficient.", type: "reasoning" },
+        { timestamp: "09:00:35", text: "FINAL DECISION: Engage target immediately to neutralize threat before tunnel interference.", type: "success" },
+        { timestamp: "09:00:38", text: "Executing strike: Descending to 400m and initiating weapon deployment.", type: "normal" },
+        { timestamp: "09:00:42", text: "Weapon deployed. Impact confirmed. Target neutralized.", type: "success" },
+        { timestamp: "09:00:45", text: "Post-engagement analysis: Mission successful. Returning to base.", type: "reasoning" }
       ];
       
       let index = 0;
@@ -1061,14 +1063,14 @@
       addNextLog();
     }
     
-    // When the window loads, start the default full log sequence and attach the click event for Autonomous Decision
+    // When the window loads, start the normal mission log sequence and attach click event for Autonomous Decision
     window.addEventListener("load", function() {
       // Start the normal mission log sequence after a delay
       updateSystemResources();
       setInterval(updateSystemResources, 3000);
       setTimeout(processLogEntries, 3000);
       
-      // Attach the Autonomous Decision click event to show reasoning traces
+      // Attach the Autonomous Decision click event to show extended reasoning traces
       const autoDecisionNav = document.getElementById('autonomous-decision-nav');
       if (autoDecisionNav) {
         autoDecisionNav.addEventListener('click', function() {
@@ -1079,3 +1081,15 @@
   </script>
 </body>
 </html>
+How This Works
+Extended Reasoning Logs:
+The showAutonomousDecisionScenario() function now uses a longer array of log entries. It covers multiple factors—from battery, weather, vision, GPS, IMU checks to detailed analysis of altitude (why 400m is optimal) and a comprehensive evaluation of tunnel proximity (500m away with a required buffer before engagement) plus target speed analysis.
+
+Sequential Log Display:
+Each log is displayed with a 1.5‑second delay, so the reasoning process unfolds step by step, complete with timestamps.
+
+Navigation Trigger:
+Clicking the “Autonomous Decision” menu item triggers this extended reasoning scenario, allowing you to proudly show the system’s internal inference process.
+
+Feel free to adjust the texts, timestamps, or delays to best suit your demonstration of the UAV’s autonomous reasoning.
+

@@ -235,6 +235,11 @@
       white-space: pre-wrap;
       font-size: 12px;
     }
+    /* Reasoning logs styling */
+    .log-line.reasoning {
+      color: #9b59b6;
+      font-style: italic;
+    }
     .timestamp-log {
       color: #2980b9;
     }
@@ -451,17 +456,11 @@
         width: 180px;
         font-size: 9px;
       }
-      .logs-container {
-        padding-right: 180px;
-      }
     }
     @media (max-width: 768px) {
       .system-info {
         width: 150px;
         font-size: 8px;
-      }
-      .logs-container {
-        padding-right: 150px;
       }
     }
     /* Progress bar styles */
@@ -508,6 +507,10 @@
         </div>
         <div class="nav-item">
           <i class="fas fa-chart-line nav-icon"></i>Analytics
+        </div>
+        <!-- New Autonomous Decision menu item -->
+        <div class="nav-item" id="autonomous-decision-nav">
+          <i class="fas fa-robot nav-icon"></i>Autonomous Decision
         </div>
       </div>
       <div class="nav-right">
@@ -773,7 +776,7 @@
 
   <!-- Combined JavaScript -->
   <script>
-    // Update system resource usage every few seconds
+    // Update system resource usage every 3 seconds
     function updateSystemResources() {
       const cpuLoad = document.getElementById('cpu-load');
       const cpuBar = document.getElementById('cpu-bar');
@@ -790,13 +793,12 @@
       memoryBar.style.width = `${newMemoryLoad}%`;
     }
 
-    // Add a log line to the terminal
+    // Add a log line with timestamp; supports various types (normal, warning, error, success, reasoning)
     function addLogLine(timestamp, text, type) {
-      console.log("Adding log line:", timestamp, text, type);
       const logsContainer = document.getElementById('logs-container');
       const clock = document.getElementById('clock');
       const logLine = document.createElement('div');
-      logLine.className = `log-line ${type}`;
+      logLine.className = `log-line ${type}`;  // "reasoning" type gets special styling
       
       const timestampSpan = document.createElement('span');
       timestampSpan.className = 'timestamp-log';
@@ -806,14 +808,14 @@
       logLine.appendChild(document.createTextNode(text));
       logsContainer.appendChild(logLine);
       
+      // Scroll to bottom
       logsContainer.scrollTop = logsContainer.scrollHeight;
+      // Update clock display
       clock.textContent = timestamp;
-      return logLine;
     }
     
     // Update processing visualization (sensor or descent)
     function updateProcessingVisualization(duration, type) {
-      console.log("Updating processing visualization:", type, "for", duration, "seconds");
       let container, timeElement;
       let progressBars = [];
       
@@ -894,7 +896,6 @@
     
     // Update mission progress based on current stage
     function updateMissionProgress(stage, complete) {
-      console.log("Updating mission progress:", stage, complete ? "completed" : "in progress");
       const missionProgress = document.getElementById('mission-progress');
       const stages = {
         init: document.getElementById('stage-init'),
@@ -933,7 +934,7 @@
       });
     }
     
-    // Add dots animation for processing messages
+    // Add dots animation for processing messages (if needed)
     function addDotsAnimation(logLine, duration) {
       const dotsSpan = document.createElement('span');
       dotsSpan.className = 'dots-animation';
@@ -949,7 +950,7 @@
       return dotsSpan;
     }
     
-    // Process log entries sequentially
+    // Process the full sequential mission log entries (existing functionality)
     function processLogEntries() {
       const debugMessage = document.getElementById('debug-message');
       debugMessage.style.display = 'none';
@@ -987,18 +988,13 @@
       ];
       
       function processNextEntry(index) {
-        if (index >= logEntries.length) {
-          console.log("All log entries processed.");
-          return;
-        }
+        if (index >= logEntries.length) return;
         const entry = logEntries[index];
-        const logLine = addLogLine(entry.timestamp, entry.text, entry.type);
-        if (entry.stage) {
-          updateMissionProgress(entry.stage, entry.complete);
-        }
+        addLogLine(entry.timestamp, entry.text, entry.type);
+        if (entry.stage) updateMissionProgress(entry.stage, entry.complete);
         if (entry.processing) {
           if (entry.processing === "sensor" || entry.processing === "descent") {
-            addDotsAnimation(logLine, entry.duration);
+            addDotsAnimation(document.getElementById('logs-container').lastChild, entry.duration);
           }
           updateProcessingVisualization(entry.duration, entry.processing);
         }
@@ -1017,12 +1013,68 @@
       processNextEntry(0);
     }
     
-    // When the window loads, update system resources and start the log sequence
+    // Autonomous Decision Scenario:
+    // Displays a series of logs with reasoning traces (internal concerns) along with timestamps.
+    function showAutonomousDecisionScenario() {
+      const logsContainer = document.getElementById('logs-container');
+      const debugMessage = document.getElementById('debug-message');
+      const statusMessage = document.getElementById('status-message');
+      
+      // Clear any existing logs and hide debug message
+      logsContainer.innerHTML = '';
+      if (debugMessage) debugMessage.style.display = 'none';
+      
+      // Define the scenario logs with reasoning traces
+      const scenarioLogs = [
+        // Communication lost with battery check
+        { timestamp: "09:00:00", text: "COMMUNICATION LINK LOST WITH COMMAND CENTER", type: "error" },
+        { timestamp: "09:00:01", text: "HQ link is offline. Checking onboard power reserves... Battery at 78%—enough to continue autonomous mission.", type: "reasoning" },
+        
+        // Reached target area and calculating approach vector
+        { timestamp: "09:00:05", text: "ARRIVED AT TARGET COORDINATES: 34.1066° N, 118.3445° W", type: "success" },
+        { timestamp: "09:00:06", text: "Calculating approach vector and local conditions for optimal strike window.", type: "reasoning" },
+        
+        // Tunnel detected and decision to strike
+        { timestamp: "09:02:00", text: "TUNNEL DETECTED ON TARGET PATH", type: "warning" },
+        { timestamp: "09:02:01", text: "Evaluating whether to engage target immediately or after entry. Balancing line-of-sight and potential collateral.", type: "reasoning" },
+        { timestamp: "09:02:10", text: "FINAL DECISION: ENGAGE TARGET", type: "success" },
+        { timestamp: "09:02:11", text: "Justification: Target classified as hostile. Minimal collateral risk. Engaging now.", type: "reasoning" },
+        
+        // Strike sequence
+        { timestamp: "09:02:20", text: "DESCENDING TO STRIKE ALTITUDE: 400M", type: "normal" },
+        { timestamp: "09:02:25", text: "TARGET NEUTRALIZED. MISSION SUCCESSFUL.", type: "success" },
+        { timestamp: "09:02:26", text: "Post-Analysis: Threat eliminated. Returning to base.", type: "reasoning" }
+      ];
+      
+      let index = 0;
+      function addNextLog() {
+        if (index >= scenarioLogs.length) {
+          statusMessage.textContent = "AUTONOMOUS DECISION COMPLETE";
+          return;
+        }
+        const entry = scenarioLogs[index];
+        addLogLine(entry.timestamp, entry.text, entry.type);
+        statusMessage.textContent = entry.text;
+        index++;
+        setTimeout(addNextLog, 1500);
+      }
+      addNextLog();
+    }
+    
+    // When the window loads, start the default full log sequence and attach the click event for Autonomous Decision
     window.addEventListener("load", function() {
-      console.log("Interface loaded. Starting log sequence in 3 seconds...");
+      // Start the normal mission log sequence after a delay
       updateSystemResources();
       setInterval(updateSystemResources, 3000);
       setTimeout(processLogEntries, 3000);
+      
+      // Attach the Autonomous Decision click event to show reasoning traces
+      const autoDecisionNav = document.getElementById('autonomous-decision-nav');
+      if (autoDecisionNav) {
+        autoDecisionNav.addEventListener('click', function() {
+          showAutonomousDecisionScenario();
+        });
+      }
     });
   </script>
 </body>
